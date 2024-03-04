@@ -40,7 +40,7 @@ public class PlayerView : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit) && hit.collider.CompareTag("Enemy"))
+        if (Physics.Raycast(ray, out hit) && hit.collider.CompareTag("Enemy") && hit.collider.GetComponent<ForceHitDetector>() != null) //TODO: This looks a bit ugly, maybe just focusing on the component is fine?
         {
             hit.collider.GetComponent<ForceHitDetector>().HitWithForce(ray.direction);
         }
