@@ -68,7 +68,6 @@ public class PlayerView : MonoBehaviour
             newRotationY = rightViewLimit;
         }
 
-        Debug.Log(newRotationY);
         transform.localRotation = Quaternion.Euler(newRotationX, newRotationY, 0);
     }
 
@@ -79,10 +78,6 @@ public class PlayerView : MonoBehaviour
         if (Physics.Raycast(ray, out hit) && hit.collider.CompareTag("Enemy") && hit.collider.GetComponent<ForceHitDetector>() != null) //TODO: This looks a bit ugly, maybe just focusing on the component is fine?
         {
             hit.collider.GetComponent<ForceHitDetector>().HitWithForce(ray.direction);
-        }
-        else
-        {
-            Debug.Log("Missed!");
         }
     }
 }

@@ -1,10 +1,9 @@
 fileFormatVersion: 2
-guid: 2e1188dcc283b6f48bb7fa7e7a201699
+guid: dcc7071b0f7c37a43b76478f6b583d7d
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences:
-  - scoreCanvas: {fileID: 6858080073014826886, guid: 4436f65816e9a11439433ee5b6a39af1, type: 3}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

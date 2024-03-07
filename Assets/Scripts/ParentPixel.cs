@@ -10,6 +10,11 @@ public class ParentPixel : MonoBehaviour, ForceHitDetector
     private bool parentHit = false;
     int minX;
     int minY;
+    [Header("Points and Scoring")]
+    [SerializeField] private int points = 100;
+    [SerializeField] private int pointsDecayPerHitPercent = 10;
+    private ScoreCanvasController scoreCanvasController;
+    private int timesHit = 0;
 
     void Start()
     {
@@ -24,6 +29,7 @@ public class ParentPixel : MonoBehaviour, ForceHitDetector
             childGrid[y, x] = child.gameObject;
         }
         parentPosition = new Vector2(0 - minX, 0 - minY);
+        scoreCanvasController = FindObjectOfType<ScoreCanvasController>();
     }
 
     private void InitChildrenGrid() //TODO: This code should be used on all prefabs, so It can be set in the prefab
@@ -56,11 +62,13 @@ public class ParentPixel : MonoBehaviour, ForceHitDetector
         {
             transform.AddComponent<Rigidbody>().AddForce(force * 10, ForceMode.Impulse);
             AddForceToChildren(AllRemainingChildrenPositions(), force, newLocalPosition);
+            scoreCanvasController.AddScore(Mathf.RoundToInt(points * Mathf.Pow(1 - pointsDecayPerHitPercent / 100f, timesHit)), ScoreCanvasController.ScoreType.Normal);
             return;
         }
 
         List<Vector2> disconnectedChildren = DetectDisconnectedChildren();
         AddForceToChildren(disconnectedChildren, force / 2, newLocalPosition); //feels weird with full force
+        timesHit++;
     }
 
     private List<Vector2> AllRemainingChildrenPositions()
