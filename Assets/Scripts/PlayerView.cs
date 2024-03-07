@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerView : MonoBehaviour
 {
     [Header("Orientation Settings")]
-    [SerializeField] private float mouseLimit = 1.0f;
+    [SerializeField] private float orientationSpeedLimitMouse = 1.0f;
     [SerializeField, Range(10, 80)] private float verticalUpViewLimit = 80.0f;
     [SerializeField, Range(10, 80)] private float verticalDownViewLimit = 80.0f;
     [SerializeField, Range(0, 160)] private float horizontalViewLimit = 160.0f;
@@ -19,31 +19,33 @@ public class PlayerView : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        int circleDegrees = 360;
-        upperViewLimit = circleDegrees - verticalUpViewLimit;
+
+        int fullCircleDegrees = 360;
+        upperViewLimit = fullCircleDegrees - verticalUpViewLimit;
         lowerViewLimit = verticalDownViewLimit;
-        rightViewLimit = circleDegrees - horizontalViewLimit;
+        rightViewLimit = fullCircleDegrees - horizontalViewLimit;
         leftViewLimit = horizontalViewLimit;
     }
 
     void Update()
     {
-        HandleLook();
+        HandleOrientation();
         if (Input.GetMouseButtonDown(0))
         {
             HandleAttack();
         }
     }
 
-    private void HandleLook()
+    private void HandleOrientation()
     {
         Vector3 currentRotation = transform.localEulerAngles;
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
         Vector2 orientationVector = new Vector2(mouseX, mouseY);
-        if (orientationVector.magnitude > mouseLimit)
+
+        if (orientationVector.magnitude > orientationSpeedLimitMouse)
         {
-            orientationVector = orientationVector.normalized * mouseLimit;
+            orientationVector = orientationVector.normalized * orientationSpeedLimitMouse;
         }
 
         float newRotationX = currentRotation.x - orientationVector.y;
@@ -55,6 +57,7 @@ public class PlayerView : MonoBehaviour
         {
             newRotationX = lowerViewLimit;
         }
+
         float newRotationY = currentRotation.y + orientationVector.x;
         if (newRotationY > leftViewLimit && newRotationY < halfCircleDegrees)
         {
