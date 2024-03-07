@@ -11,6 +11,7 @@ public class ParentPixel : MonoBehaviour, ForceHitDetector
     private bool parentHit = false;
     int minX;
     int minY;
+
     void Start()
     {
         CalcArraySize();
@@ -49,6 +50,7 @@ public class ParentPixel : MonoBehaviour, ForceHitDetector
             {
                 maxY = (int)localPosition.y;
             }
+
             child.gameObject.AddComponent<ChildPixel>();
         }
         childrenArray = new GameObject[maxY - minY + 1, maxX - minX + 1];
