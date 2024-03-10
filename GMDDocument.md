@@ -1,0 +1,1 @@
+1. This is the initial draft for the game. It mainly focuses on some of the mechanics and gameplay, trying not to look to far into the future https://docs.google.com/document/d/1Fj4ImY9y1neuFypJK7_Iww7-hKvBovadtiTnOD-etto/edit?usp=sharing
