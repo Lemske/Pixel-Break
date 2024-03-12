@@ -63,6 +63,11 @@ public class ParentPixel : MonoBehaviour, ForceHitDetector
             transform.AddComponent<Rigidbody>().AddForce(force * 10, ForceMode.Impulse);
             AddForceToChildren(AllRemainingChildrenPositions(), force, newLocalPosition);
             scoreCanvasController.AddScore(Mathf.RoundToInt(points * Mathf.Pow(1 - pointsDecayPerHitPercent / 100f, timesHit)), ScoreCanvasController.ScoreType.Normal);
+            SimpleMovement simpleMovement = transform.GetComponent<SimpleMovement>(); //TODO: Don't like this way of doing it
+            if (simpleMovement != null)
+            {
+                simpleMovement.enabled = false;
+            }
             return;
         }
 
