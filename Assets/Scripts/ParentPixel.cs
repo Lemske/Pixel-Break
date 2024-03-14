@@ -94,10 +94,22 @@ public class ParentPixel : MonoBehaviour, ForceHitDetector
 
     private List<Vector2> FindHitChildrenLocations(Vector2 localPosition, int radius, Vector3 force)
     {
+        //Calculating the direction of the force onto the object
+        float dotProduct = Vector3.Dot(force, transform.forward);
+        if (dotProduct == 0) //Removing edge case where its directly 0, can be fixed with doing some different math, but cant think of it right now
+        {
+            parentHit = true;
+            return new List<Vector2>();
+        }
+        bool perpendicular = dotProduct > -0.2 && dotProduct < 0.2; //TODO: The 0.2 should be a parameter
+        float rightProduct = Vector3.Dot(force, transform.right);
+        float upProduct = Vector3.Dot(force, transform.up);
+        Debug.Log("Right: " + rightProduct + " Up: " + upProduct);
+
         List<Vector2> surroundingChildren = new List<Vector2>();
-        int xDirection = force.x > 0.5 ? 1 : force.x < -0.5 ? -1 : 0; //Todo: As of right now this only works when the front is facing the player. Might want to change the rotation of parent later on, as movement
-        int yDirection = force.y > 0.5 ? 1 : force.y < -0.5 ? -1 : 0;
-        Vector2 newLocalPosition = localPosition + new Vector2(xDirection, yDirection);
+        int column = rightProduct > 0.7 ? 1 : rightProduct < -0.7 ? -1 : 0;
+        int row = upProduct > 0.7 ? 1 : upProduct < -0.7 ? -1 : 0;
+        Vector2 newLocalPosition = localPosition + new Vector2(column, row);
 
         for (int i = -radius; i <= radius; i++)
         {
@@ -118,6 +130,39 @@ public class ParentPixel : MonoBehaviour, ForceHitDetector
                 else if (x == parentPosition.x && y == parentPosition.y)
                 {
                     parentHit = true;
+                }
+            }
+        }
+        if (perpendicular)
+        {
+            if (rightProduct > 0.7 || rightProduct < -0.7)
+            {
+                for (int i = 0; i < childGrid.GetLength(1); i++)
+                {
+                    Vector2 check = new Vector2(i, localPosition.y);
+                    if (childGrid[(int)localPosition.y, i] != null && !surroundingChildren.Contains(check))
+                    {
+                        if (i == parentPosition.x && localPosition.y == parentPosition.y)
+                        {
+                            parentHit = true;
+                        }
+                        surroundingChildren.Add(check);
+                    }
+                }
+            }
+            if (upProduct > 0.7 || upProduct < -0.7)
+            {
+                for (int i = 0; i < childGrid.GetLength(0); i++)
+                {
+                    Vector2 check = new Vector2(localPosition.x, i);
+                    if (i == parentPosition.y && localPosition.x == parentPosition.x)
+                    {
+                        parentHit = true;
+                    }
+                    if (childGrid[i, (int)localPosition.x] != null && !surroundingChildren.Contains(check))
+                    {
+                        surroundingChildren.Add(check);
+                    }
                 }
             }
         }

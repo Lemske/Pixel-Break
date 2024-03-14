@@ -28,7 +28,6 @@ public class ScoreCanvasController : MonoBehaviour //TODO: This is fine for now,
 
     public void AddScore(int score, ScoreType scoreType) //TODO: Add scoreType animation loops and count when to shift to normal
     {
-        Debug.Log("Score added: " + score);
         remainingScore += score;
     }
 }
