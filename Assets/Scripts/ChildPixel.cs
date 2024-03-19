@@ -7,7 +7,7 @@ public class ChildPixel : MonoBehaviour, ForceHitDetector
 {
     public void HitWithForce(Vector3 force)
     {
-        //Debug.Log(gameObject.name + " hit with force: " + force);
+        Debug.Log(transform.localPosition);
         transform.parent.GetComponent<ParentPixel>().HandleGettingHit(force, transform.localPosition);
     }
 }

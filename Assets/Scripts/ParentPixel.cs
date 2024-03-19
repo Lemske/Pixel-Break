@@ -4,244 +4,194 @@ using UnityEngine;
 
 public class ParentPixel : MonoBehaviour, ForceHitDetector
 {
-    //2d Array for childrens positions compared to eachother
-    private GameObject[,] childGrid;
-    private Vector2 parentPosition;
-    private bool parentHit = false;
-    int minX;
-    int minY;
+    private PixelGrid pixelGrid;
+    private ScoreCanvasController scoreCanvasController;
+    private int hitCount = 0;
+    [Header("Horizontal/Vertical shoot")]
+    [SerializeField, Range(0, 1)] private float vDirThreshold = 0.7f;
+    [SerializeField, Range(0, 1)] private float hDirThreshold = 0.7f;
+    [SerializeField, Range(0, 1)] private float vClearThreshold = 0.9f;
+    [SerializeField, Range(0, 1)] private float hClearThreshold = 0.9f;
+    [Header("Force Appliers")]
+    [SerializeField] private float distanceMultiplier = 2;
+    [SerializeField] private float maxForce = 10;
+    [SerializeField] private float disconnectedReducer = 2;
     [Header("Points and Scoring")]
     [SerializeField] private int points = 100;
-    [SerializeField] private int pointsDecayPerHitPercent = 10;
-    private ScoreCanvasController scoreCanvasController;
-    private int timesHit = 0;
+    [SerializeField] private int pointsDecayPercentage = 10;
+
 
     void Start()
     {
-        InitChildrenGrid();
-
-        foreach (Transform child in transform)
-        {
-            Vector3 localPosition = child.localPosition;
-            int y = (int)localPosition.y - minY; // y represents the row
-            int x = (int)localPosition.x - minX; // x represents the column
-
-            childGrid[y, x] = child.gameObject;
-        }
-        parentPosition = new Vector2(0 - minX, 0 - minY);
+        pixelGrid = new PixelGrid(transform);
         scoreCanvasController = FindObjectOfType<ScoreCanvasController>();
-    }
-
-    private void InitChildrenGrid() //TODO: This code should be used on all prefabs, so It can be set in the prefab
-    {
-        int maxX = 0;
-        int maxY = 0;
-        foreach (Transform child in transform)
-        {
-            Vector3 localPosition = child.localPosition;
-            minX = (int)Mathf.Min(minX, localPosition.x);
-            maxX = (int)Mathf.Max(maxX, localPosition.x);
-            minY = (int)Mathf.Min(minY, localPosition.y);
-            maxY = (int)Mathf.Max(maxY, localPosition.y);
-
-            child.gameObject.AddComponent<ChildPixel>();
-        }
-        childGrid = new GameObject[maxY - minY + 1, maxX - minX + 1];
     }
 
     public void HandleGettingHit(Vector3 force, Vector2 localPosition)
     {
-        int y = (int)localPosition.y - minY;
-        int x = (int)localPosition.x - minX;
-        Vector2 newLocalPosition = new Vector2(x, y);
+        int[] gridPosition = pixelGrid.GetXYPositionFromVector2(localPosition);
+        List<Pixel> surroundingPixels = FindHitPixelsLocations(gridPosition[0], gridPosition[1], 1, force);
 
-        List<Vector2> surroundingChildren = FindHitChildrenLocations(newLocalPosition, 1, force);
-        AddForceToChildren(surroundingChildren, force, newLocalPosition);
-
-        if (parentHit)
-        {
-            transform.AddComponent<Rigidbody>().AddForce(force * 10, ForceMode.Impulse);
-            AddForceToChildren(AllRemainingChildrenPositions(), force, newLocalPosition);
-            scoreCanvasController.AddScore(Mathf.RoundToInt(points * Mathf.Pow(1 - pointsDecayPerHitPercent / 100f, timesHit)), ScoreCanvasController.ScoreType.Normal);
-            SimpleMovement simpleMovement = transform.GetComponent<SimpleMovement>(); //TODO: Don't like this way of doing it
-            if (simpleMovement != null)
-            {
-                simpleMovement.enabled = false;
-            }
+        if (surroundingPixels.Count == 0)
             return;
-        }
 
-        List<Vector2> disconnectedChildren = DetectDisconnectedChildren();
-        AddForceToChildren(disconnectedChildren, force / 2, newLocalPosition); //feels weird with full force
-        timesHit++;
+        Vector2 localPositionVector = new Vector2(gridPosition[0], gridPosition[1]);
+        ApplyForceToPixels(surroundingPixels, force, localPositionVector);
+
+        List<Pixel> disconnectedChildren = DetectDisconnectedChildren();
+        ApplyForceToPixels(disconnectedChildren, force / disconnectedReducer, localPositionVector);
+        hitCount++;
     }
 
-    private List<Vector2> AllRemainingChildrenPositions()
+    private List<Pixel> GetAllRemainingPixelsPositions()
     {
-        List<Vector2> remainingChildren = new List<Vector2>();
-        for (int i = 0; i < childGrid.GetLength(0); i++)
+        List<Pixel> remainingChildren = new List<Pixel>();
+        for (int y = 0; y < pixelGrid.yHeight; y++)
         {
-            for (int j = 0; j < childGrid.GetLength(1); j++)
+            for (int x = 0; x < pixelGrid.xWidth; x++)
             {
-                if (childGrid[i, j] != null)
+                Pixel pixel = pixelGrid.GetPixelGridPosition(x, y);
+                if (pixel != null)
                 {
-                    remainingChildren.Add(new Vector2(j, i));
+                    remainingChildren.Add(pixel);
                 }
             }
         }
         return remainingChildren;
     }
 
-    private List<Vector2> FindHitChildrenLocations(Vector2 localPosition, int radius, Vector3 force)
+    private List<Pixel> FindHitPixelsLocations(int x, int y, int radius, Vector3 force) //Might want a new spread effect then just a radius
     {
-        //Calculating the direction of the force onto the object
-        float dotProduct = Vector3.Dot(force, transform.forward);
-        if (dotProduct == 0) //Removing edge case where its directly 0, can be fixed with doing some different math, but cant think of it right now
-        {
-            parentHit = true;
-            return new List<Vector2>();
-        }
-        bool perpendicular = dotProduct > -0.2 && dotProduct < 0.2; //TODO: The 0.2 should be a parameter
         float rightProduct = Vector3.Dot(force, transform.right);
         float upProduct = Vector3.Dot(force, transform.up);
-        Debug.Log("Right: " + rightProduct + " Up: " + upProduct);
 
-        List<Vector2> surroundingChildren = new List<Vector2>();
-        int column = rightProduct > 0.7 ? 1 : rightProduct < -0.7 ? -1 : 0;
-        int row = upProduct > 0.7 ? 1 : upProduct < -0.7 ? -1 : 0;
-        Vector2 newLocalPosition = localPosition + new Vector2(column, row);
+        List<Pixel> surroundingPixels = new List<Pixel>();
 
-        for (int i = -radius; i <= radius; i++)
+        int xDir = rightProduct > hDirThreshold ? 1 : rightProduct < -hDirThreshold ? -1 : 0;
+        int yDir = upProduct > vDirThreshold ? 1 : upProduct < -vDirThreshold ? -1 : 0;
+        int newX = x + xDir;
+        int newY = y + yDir;
+
+        int startX = Mathf.Max(0, newX - radius);
+        int endX = Mathf.Min(pixelGrid.xWidth - 1, newX + radius);
+        int startY = Mathf.Max(0, newY - radius);
+        int endY = Mathf.Min(pixelGrid.yHeight - 1, newY + radius);
+
+        for (int yi = startY; yi <= endY; yi++)
         {
-            for (int j = -radius; j <= radius; j++)
+            for (int xi = startX; xi <= endX; xi++)
             {
-                int y = (int)newLocalPosition.y + i;
-                int x = (int)newLocalPosition.x + j;
-                bool withinXBounds = x >= 0 && x < childGrid.GetLength(1);
-                bool withinYBounds = y >= 0 && y < childGrid.GetLength(0);
-                if (!withinXBounds || !withinYBounds)
+                Pixel pixel = pixelGrid.GetPixelGridPosition(xi, yi);
+                if (pixel != null)
                 {
-                    continue;
+                    surroundingPixels.Add(pixel);
                 }
-                if (childGrid[y, x] != null)
+                else if (xi == pixelGrid.corePositionXY[0] && yi == pixelGrid.corePositionXY[1])
                 {
-                    surroundingChildren.Add(new Vector2(x, y));
-                }
-                else if (x == parentPosition.x && y == parentPosition.y)
-                {
-                    parentHit = true;
+                    return CoreHit(force, x, y);
                 }
             }
         }
-        if (perpendicular)
+        Debug.Log("RightPro: " + rightProduct);
+        if (rightProduct > hClearThreshold || rightProduct < -hClearThreshold)
         {
-            if (rightProduct > 0.7 || rightProduct < -0.7)
+            for (int i = 0; i < pixelGrid.xWidth; i++)
             {
-                for (int i = 0; i < childGrid.GetLength(1); i++)
+                Debug.Log("i: " + i + " y: " + y);
+                Pixel pixel = pixelGrid.GetPixelGridPosition(i, y);
+                if (pixel != null && !surroundingPixels.Contains(pixel))
                 {
-                    Vector2 check = new Vector2(i, localPosition.y);
-                    if (childGrid[(int)localPosition.y, i] != null && !surroundingChildren.Contains(check))
-                    {
-                        if (i == parentPosition.x && localPosition.y == parentPosition.y)
-                        {
-                            parentHit = true;
-                        }
-                        surroundingChildren.Add(check);
-                    }
+                    surroundingPixels.Add(pixel);
                 }
-            }
-            if (upProduct > 0.7 || upProduct < -0.7)
-            {
-                for (int i = 0; i < childGrid.GetLength(0); i++)
+                if (i == pixelGrid.corePositionXY[0] && y == pixelGrid.corePositionXY[1])
                 {
-                    Vector2 check = new Vector2(localPosition.x, i);
-                    if (i == parentPosition.y && localPosition.x == parentPosition.x)
-                    {
-                        parentHit = true;
-                    }
-                    if (childGrid[i, (int)localPosition.x] != null && !surroundingChildren.Contains(check))
-                    {
-                        surroundingChildren.Add(check);
-                    }
+                    return CoreHit(force, x, y);
                 }
             }
         }
-
-        return surroundingChildren;
+        Debug.Log("UpProduct: " + upProduct);
+        Debug.Log("UpProductThes: " + vClearThreshold);
+        if (upProduct > vClearThreshold || upProduct < -vClearThreshold)
+        {
+            for (int i = 0; i < pixelGrid.yHeight; i++)
+            {
+                Pixel pixel = pixelGrid.GetPixelGridPosition(x, i);
+                if (pixel != null && !surroundingPixels.Contains(pixel))
+                {
+                    surroundingPixels.Add(pixel);
+                }
+                else if (x == pixelGrid.corePositionXY[0] && i == pixelGrid.corePositionXY[1])
+                {
+                    return CoreHit(force, x, y);
+                }
+            }
+        }
+        return surroundingPixels;
     }
 
-    private void AddForceToChildren(List<Vector2> childrenHit, Vector3 force, Vector2 locationHit)
+    private void ApplyForceToPixels(List<Pixel> childrenHit, Vector3 force, Vector2 locationHit)
     {
-        foreach (Vector2 childPosition in childrenHit)
+        foreach (Pixel child in childrenHit)
         {
-            GameObject child = childGrid[(int)childPosition.y, (int)childPosition.x];
-            child.transform.parent = null;
-            childGrid[(int)childPosition.y, (int)childPosition.x] = null;
-            float distance = Vector2.Distance(locationHit, childPosition);
-            float forceMultiplier = distance == 0 ? 10 : 10 / distance * 2; //Todo: The 2 should be a parameter
-            child.AddComponent<Rigidbody>().AddForce(force * forceMultiplier, ForceMode.Impulse);
-            Destroy(child.GetComponent<ChildPixel>());
+            child.pixel.transform.parent = null;
+            pixelGrid.RemovePixel(child);
+            float distance = Vector2.Distance(locationHit, new Vector2(child.x, child.y));
+            float forceMultiplier = distance == 0 ? maxForce : maxForce / distance * distanceMultiplier;
+            GameObject pixel = child.pixel;
+            pixel.AddComponent<Rigidbody>().AddForce(force * forceMultiplier, ForceMode.Impulse);
+            Destroy(pixel.GetComponent<ChildPixel>());
         }
     }
 
-    private GameObject[,] FindConnectedChildren() //Todo: revisit later, might be a better way
+    private PixelGrid FindConnectedChildren()
     {
-        GameObject[,] connectedChildren = new GameObject[childGrid.GetLength(0), childGrid.GetLength(1)];
+        PixelGrid connectedChildren = new PixelGrid(pixelGrid.xWidth, pixelGrid.yHeight);
         Queue<(int, int)> queue = new Queue<(int, int)>();
-        connectedChildren[(int)parentPosition.y, (int)parentPosition.x] = childGrid[(int)parentPosition.y, (int)parentPosition.x];
-        queue.Enqueue(((int)parentPosition.y, (int)parentPosition.x));
-        while (queue.Count > 0)
+        queue.Enqueue((pixelGrid.corePositionXY[1], pixelGrid.corePositionXY[0]));
+        while (queue.Count > 0) //Check neighbours vertically and horizontally
         {
-            //Check neighbours vertically and horizontally
-            (int, int) current = queue.Dequeue();
-            int y = current.Item1;
-            int x = current.Item2;
-            if (y - 1 >= 0 && childGrid[y - 1, x] != null && connectedChildren[y - 1, x] == null) //Doing it the lazy way, many if statements
-            {
-                connectedChildren[y - 1, x] = childGrid[y - 1, x];
-                queue.Enqueue((y - 1, x));
-            }
-            if (y + 1 < childGrid.GetLength(0) && childGrid[y + 1, x] != null && connectedChildren[y + 1, x] == null)
-            {
-                connectedChildren[y + 1, x] = childGrid[y + 1, x];
-                queue.Enqueue((y + 1, x));
-            }
-            if (x - 1 >= 0 && childGrid[y, x - 1] != null && connectedChildren[y, x - 1] == null)
-            {
-                connectedChildren[y, x - 1] = childGrid[y, x - 1];
-                queue.Enqueue((y, x - 1));
-            }
-            if (x + 1 < childGrid.GetLength(1) && childGrid[y, x + 1] != null && connectedChildren[y, x + 1] == null)
-            {
-                connectedChildren[y, x + 1] = childGrid[y, x + 1];
-                queue.Enqueue((y, x + 1));
-            }
+            (int y, int x) = queue.Dequeue();
+            EnqueueNeighbors(x, y - 1, connectedChildren, queue);
+            EnqueueNeighbors(x, y + 1, connectedChildren, queue);
+            EnqueueNeighbors(x - 1, y, connectedChildren, queue);
+            EnqueueNeighbors(x + 1, y, connectedChildren, queue);
         }
         return connectedChildren;
     }
 
-    private List<Vector2> DetectDisconnectedChildren() //Todo: revisit later, might be a better way
+    private void EnqueueNeighbors(int x, int y, PixelGrid connectedChildren, Queue<(int, int)> queue)
     {
-        List<Vector2> disconnectedChildren = new List<Vector2>();
-        GameObject[,] stillConnectedToParent = FindConnectedChildren();
-
-        for (int i = 0; i < childGrid.GetLength(0); i++)
+        Pixel pixel = pixelGrid.GetPixelGridPosition(x, y);
+        if (pixel != null && connectedChildren.GetPixelGridPosition(x, y) == null)
         {
-            for (int j = 0; j < childGrid.GetLength(1); j++)
-            {
-                if (stillConnectedToParent[i, j] == null && childGrid[i, j] != null)
-                {
-                    disconnectedChildren.Add(new Vector2(j, i));
-                }
-            }
+            connectedChildren.AddPixel(pixel);
+            queue.Enqueue((y, x));
         }
+    }
 
-        return disconnectedChildren;
+    private List<Pixel> DetectDisconnectedChildren()
+    {
+        PixelGrid stillConnectedToParent = FindConnectedChildren();
+        return pixelGrid.GetDifference(stillConnectedToParent);
+    }
+
+    private List<Pixel> CoreHit(Vector3 force, int xHitPos, int yHitPos)
+    {
+        transform.AddComponent<Rigidbody>().AddForce(force * maxForce, ForceMode.Impulse);
+        ApplyForceToPixels(GetAllRemainingPixelsPositions(), force, new Vector2(xHitPos, yHitPos));
+        scoreCanvasController.AddScore(Mathf.RoundToInt(points * Mathf.Pow(1 - pointsDecayPercentage / 100f, hitCount)), ScoreCanvasController.ScoreType.Normal);
+        SimpleMovement simpleMovement = transform.GetComponent<SimpleMovement>();
+        if (simpleMovement != null)
+        {
+            simpleMovement.enabled = false;
+        }
+        Destroy(transform.GetComponent<ParentPixel>());
+        return new List<Pixel>();
     }
 
     public void HitWithForce(Vector3 force)
     {
-        if (!parentHit)
-            HandleGettingHit(force, new Vector2(0, 0)); //Have to set it to 0, 0 since handle getting hit calc array position
+        int[] position = pixelGrid.corePositionXY;
+        CoreHit(force, position[0], position[1]);
     }
 }

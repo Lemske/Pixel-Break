@@ -1,19 +1,15 @@
 using UnityEngine;
 
-public class PixelArray
-{
-
-}
-
 public class Pixel
 {
-    GameObject gameObject;
+    public GameObject pixel;
     public int x;
     public int y;
 
-    public Location(int x, int y)
+    public Pixel(int x, int y, GameObject pixel)
     {
         this.x = x;
         this.y = y;
+        this.pixel = pixel;
     }
 }

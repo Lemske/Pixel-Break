@@ -278,13 +278,29 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: verticalClearShotThreshold
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: horizontalClearShotThreshold
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: directionalShotVerticalThreshold
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: directionalShotHorizontalThreshold
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 2352469189328111520, guid: e03af26656072bb479e338466196ab08, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.543
+      value: 0.014
       objectReference: {fileID: 0}
     - target: {fileID: 2352469189328111520, guid: e03af26656072bb479e338466196ab08, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.54
+      value: 1.584
       objectReference: {fileID: 0}
     - target: {fileID: 2352469189328111520, guid: e03af26656072bb479e338466196ab08, type: 3}
       propertyPath: m_LocalPosition.z
@@ -339,6 +355,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: verticalClearShotThreshold
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: horizontalClearShotThreshold
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: directionalShotVerticalThreshold
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: directionalShotHorizontalThreshold
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 2352469189328111520, guid: e03af26656072bb479e338466196ab08, type: 3}
       propertyPath: m_LocalPosition.x
       value: -7.51
@@ -507,6 +539,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: verticalClearShotThreshold
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: horizontalClearShotThreshold
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: directionalShotVerticalThreshold
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: directionalShotHorizontalThreshold
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 2352469189328111520, guid: e03af26656072bb479e338466196ab08, type: 3}
       propertyPath: m_LocalPosition.x
       value: 10.64
@@ -779,6 +827,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: verticalClearShotThreshold
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: horizontalClearShotThreshold
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: directionalShotVerticalThreshold
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: directionalShotHorizontalThreshold
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 2352469189328111520, guid: e03af26656072bb479e338466196ab08, type: 3}
       propertyPath: m_LocalPosition.x
       value: -9.45
@@ -890,6 +954,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: verticalClearShotThreshold
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: horizontalClearShotThreshold
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: directionalShotVerticalThreshold
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: directionalShotHorizontalThreshold
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 2352469189328111520, guid: e03af26656072bb479e338466196ab08, type: 3}
       propertyPath: m_LocalPosition.x
       value: 9.31
@@ -933,6 +1013,83 @@ PrefabInstance:
     - target: {fileID: 3149736449361062232, guid: e03af26656072bb479e338466196ab08, type: 3}
       propertyPath: m_Name
       value: TestingRig Variant (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3155515014945758725, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e03af26656072bb479e338466196ab08, type: 3}
+--- !u!1001 &868033115
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: verticalClearShotThreshold
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: horizontalClearShotThreshold
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: directionalShotVerticalThreshold
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: directionalShotHorizontalThreshold
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2352469189328111520, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.453
+      objectReference: {fileID: 0}
+    - target: {fileID: 2352469189328111520, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.54
+      objectReference: {fileID: 0}
+    - target: {fileID: 2352469189328111520, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.625
+      objectReference: {fileID: 0}
+    - target: {fileID: 2352469189328111520, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2352469189328111520, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2352469189328111520, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2352469189328111520, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2352469189328111520, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2352469189328111520, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2352469189328111520, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3149736449361062232, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: m_Name
+      value: TestingRig Variant (11)
       objectReference: {fileID: 0}
     - target: {fileID: 3155515014945758725, guid: e03af26656072bb479e338466196ab08, type: 3}
       propertyPath: m_Enabled
@@ -1135,6 +1292,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: verticalClearShotThreshold
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: horizontalClearShotThreshold
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: directionalShotVerticalThreshold
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: directionalShotHorizontalThreshold
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 2352469189328111520, guid: e03af26656072bb479e338466196ab08, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.78
@@ -1560,8 +1733,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e1188dcc283b6f48bb7fa7e7a201699, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vDirThreshold: 0.7
+  hDirThreshold: 0.7
+  vClearThreshold: 0.9
+  hClearThreshold: 0.9
+  distanceMultiplier: 2
+  maxForce: 10
+  disconnectedReducer: 2
   points: 100
-  pointsDecayPerHitPercent: 10
+  pointsDecayPercentage: 10
 --- !u!1 &1306125902
 GameObject:
   m_ObjectHideFlags: 0
@@ -1769,6 +1949,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: verticalClearShotThreshold
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: horizontalClearShotThreshold
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: directionalShotVerticalThreshold
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: directionalShotHorizontalThreshold
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 2352469189328111520, guid: e03af26656072bb479e338466196ab08, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.74
@@ -1830,6 +2026,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: verticalClearShotThreshold
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: horizontalClearShotThreshold
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: directionalShotVerticalThreshold
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: directionalShotHorizontalThreshold
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 2352469189328111520, guid: e03af26656072bb479e338466196ab08, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.092200756
@@ -2073,6 +2285,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: verticalClearShotThreshold
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: horizontalClearShotThreshold
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: directionalShotVerticalThreshold
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: directionalShotHorizontalThreshold
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 2352469189328111520, guid: e03af26656072bb479e338466196ab08, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.52
@@ -2134,9 +2362,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: verticalClearShotThreshold
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: horizontalClearShotThreshold
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: directionalShotVerticalThreshold
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: directionalShotHorizontalThreshold
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 2352469189328111520, guid: e03af26656072bb479e338466196ab08, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.851
+      value: -2.127
       objectReference: {fileID: 0}
     - target: {fileID: 2352469189328111520, guid: e03af26656072bb479e338466196ab08, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2263,6 +2507,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: verticalClearShotThreshold
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: horizontalClearShotThreshold
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: directionalShotVerticalThreshold
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083125399320620795, guid: e03af26656072bb479e338466196ab08, type: 3}
+      propertyPath: directionalShotHorizontalThreshold
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 2352469189328111520, guid: e03af26656072bb479e338466196ab08, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.302
@@ -2436,6 +2696,7 @@ SceneRoots:
   - {fileID: 859546557}
   - {fileID: 367510470}
   - {fileID: 1812172842}
+  - {fileID: 868033115}
   - {fileID: 1958239491}
   - {fileID: 141056215}
   - {fileID: 1688196871}
