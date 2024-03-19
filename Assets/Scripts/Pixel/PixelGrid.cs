@@ -49,7 +49,7 @@ public class PixelGrid
             minYOffset = (int)Mathf.Min(minYOffset, localPosition.y);
             maxY = (int)Mathf.Max(maxY, localPosition.y);
 
-            child.gameObject.AddComponent<ChildPixel>();
+            child.gameObject.AddComponent<SimplePixel>();
         }
         grid = new Pixel[maxY - minYOffset + 1, maxX - minXOffset + 1];
     }

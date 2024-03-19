@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class ParentPixel : MonoBehaviour, ForceHitDetector
+public class CorePixel : MonoBehaviour, ForceHitDetector
 {
     private PixelGrid pixelGrid;
     private ScoreCanvasController scoreCanvasController;
@@ -60,7 +60,7 @@ public class ParentPixel : MonoBehaviour, ForceHitDetector
         return remainingChildren;
     }
 
-    private List<Pixel> FindHitPixelsLocations(int x, int y, int radius, Vector3 force) //Might want a new spread effect then just a radius
+    private List<Pixel> FindHitPixelsLocations(int x, int y, int radius, Vector3 force) //Might someday want another spread effect than radius
     {
         float rightProduct = Vector3.Dot(force, transform.right);
         float upProduct = Vector3.Dot(force, transform.up);
@@ -92,7 +92,6 @@ public class ParentPixel : MonoBehaviour, ForceHitDetector
                 }
             }
         }
-        Debug.Log("RightPro: " + rightProduct);
         if (rightProduct > hClearThreshold || rightProduct < -hClearThreshold)
         {
             for (int i = 0; i < pixelGrid.xWidth; i++)
@@ -109,8 +108,6 @@ public class ParentPixel : MonoBehaviour, ForceHitDetector
                 }
             }
         }
-        Debug.Log("UpProduct: " + upProduct);
-        Debug.Log("UpProductThes: " + vClearThreshold);
         if (upProduct > vClearThreshold || upProduct < -vClearThreshold)
         {
             for (int i = 0; i < pixelGrid.yHeight; i++)
@@ -139,11 +136,11 @@ public class ParentPixel : MonoBehaviour, ForceHitDetector
             float forceMultiplier = distance == 0 ? maxForce : maxForce / distance * distanceMultiplier;
             GameObject pixel = child.pixel;
             pixel.AddComponent<Rigidbody>().AddForce(force * forceMultiplier, ForceMode.Impulse);
-            Destroy(pixel.GetComponent<ChildPixel>());
+            Destroy(pixel.GetComponent<SimplePixel>());
         }
     }
 
-    private PixelGrid FindConnectedChildren()
+    private PixelGrid FindConnectedPixels()
     {
         PixelGrid connectedChildren = new PixelGrid(pixelGrid.xWidth, pixelGrid.yHeight);
         Queue<(int, int)> queue = new Queue<(int, int)>();
@@ -171,7 +168,7 @@ public class ParentPixel : MonoBehaviour, ForceHitDetector
 
     private List<Pixel> DetectDisconnectedChildren()
     {
-        PixelGrid stillConnectedToParent = FindConnectedChildren();
+        PixelGrid stillConnectedToParent = FindConnectedPixels();
         return pixelGrid.GetDifference(stillConnectedToParent);
     }
 
@@ -185,7 +182,7 @@ public class ParentPixel : MonoBehaviour, ForceHitDetector
         {
             simpleMovement.enabled = false;
         }
-        Destroy(transform.GetComponent<ParentPixel>());
+        Destroy(transform.GetComponent<CorePixel>());
         return new List<Pixel>();
     }
 
