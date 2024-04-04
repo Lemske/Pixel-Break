@@ -19,12 +19,18 @@ public class CorePixel : MonoBehaviour, ForceHitDetector
     [Header("Points and Scoring")]
     [SerializeField] private int points = 100;
     [SerializeField] private int pointsDecayPercentage = 10;
-
+    [Header("Aiming Field")]
+    [SerializeField] private float aimHelperRadius = 0.5f;
+    [SerializeField] private GameObject aimingSphere;
 
     void Start()
     {
         pixelGrid = new PixelGrid(transform);
         scoreCanvasController = FindObjectOfType<ScoreCanvasController>();
+        GameObject sphere = Instantiate(aimingSphere);
+        sphere.transform.parent = transform;
+        sphere.transform.localPosition = Vector3.zero;
+        sphere.GetComponent<SphereCollider>().radius = aimHelperRadius;
     }
 
     public void HandleGettingHit(Vector3 force, Vector2 localPosition)
@@ -190,5 +196,14 @@ public class CorePixel : MonoBehaviour, ForceHitDetector
     {
         int[] position = pixelGrid.corePositionXY;
         CoreHit(force, position[0], position[1]);
+    }
+
+    void OnDrawGizmos()
+    {
+        Color red = Color.red;
+        Gizmos.color = red;
+        Gizmos.DrawWireSphere(transform.position, aimHelperRadius);
+        Gizmos.color = red * 0.3f;
+        Gizmos.DrawSphere(transform.position, aimHelperRadius);
     }
 }

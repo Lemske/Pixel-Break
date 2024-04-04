@@ -25,7 +25,6 @@ public class EnemySpawner : MonoBehaviour
         Gizmos.matrix = transform.localToWorldMatrix * Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(rotation), Vector3.one);
 
         Gizmos.DrawWireCube(Vector3.zero, spawnDimensions);
-        //draw same cube but a little transparent
         Gizmos.color = new Color(gizmoColor.r, gizmoColor.g, gizmoColor.b, 0.5f);
         Gizmos.DrawCube(Vector3.zero, spawnDimensions);
     }
