@@ -59,26 +59,24 @@ public class PlayerView : MonoBehaviour
             return;
         }
 
-        int horizontalSomething = orientationVector.x > 0 ? 1 : -1;
-        int verticalSomething = orientationVector.y > 0 ? 1 : -1;
+        int horizontalSign = orientationVector.x > 0 ? 1 : -1;
+        int verticalSign = orientationVector.y > 0 ? 1 : -1;
 
-        Vector2 horizontalVector = new Vector2(horizontalSomething, 0);
-        Vector2 verticalVector = new Vector2(0, verticalSomething);
-        Vector2 diagonalVector = new Vector2(0.7f * horizontalSomething, 0.7f * verticalSomething);
+        float biggestDot = orientationVector.x * horizontalSign; //horizontalDot but just naming it biggest since i start with it
+        float verticalDot = orientationVector.y * verticalSign;
+        float diagonalDot = 0.7f * (orientationVector.x * horizontalSign) + 0.7f * (orientationVector.y * verticalSign);
 
-        float bestDot = Vector2.Dot(orientationVector, horizontalVector);
-        Vector2 bestVector = horizontalVector;
+        Vector2 bestVector = new Vector2(horizontalSign, 0);
 
-        float dot = Vector2.Dot(orientationVector, verticalVector);
-        if (dot > bestDot)
+        if (verticalDot > biggestDot)
         {
-            bestDot = dot;
-            bestVector = verticalVector;
+            biggestDot = verticalDot;
+            bestVector = new Vector2(0, verticalSign);
         }
-        dot = Vector2.Dot(orientationVector, diagonalVector);
-        if (dot > bestDot)
+
+        if (diagonalDot > biggestDot)
         {
-            bestVector = diagonalVector;
+            bestVector = new Vector2(0.7f * horizontalSign, 0.7f * verticalSign);
         }
 
         orientationVector = bestVector * orientationSpeed;
