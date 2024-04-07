@@ -27,6 +27,10 @@ public class CorePixel : MonoBehaviour, ForceHitDetector
     {
         pixelGrid = new PixelGrid(transform);
         scoreCanvasController = FindObjectOfType<ScoreCanvasController>();
+        if (aimingSphere == null)
+        {
+            Debug.Log(transform.name);
+        }
         GameObject sphere = Instantiate(aimingSphere);
         sphere.transform.parent = transform;
         sphere.transform.localPosition = Vector3.zero;

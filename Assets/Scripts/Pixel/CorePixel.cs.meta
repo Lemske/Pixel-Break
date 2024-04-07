@@ -4,7 +4,7 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - scoreCanvas: {fileID: 6858080073014826886, guid: 4436f65816e9a11439433ee5b6a39af1, type: 3}
+  - aimingSphere: {fileID: 8701440816693552721, guid: 49bf87d3c7c097e4f98c2b4a78428a5d, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

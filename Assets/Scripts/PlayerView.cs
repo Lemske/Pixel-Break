@@ -3,7 +3,6 @@ using UnityEngine;
 public class PlayerView : MonoBehaviour
 {
     [Header("Orientation Settings")]
-    //[SerializeField] private float orientationSpeedLimitMouse = 1.0f;
     [SerializeField, Range(10, 80)] private float verticalUpViewLimit = 80.0f;
     [SerializeField, Range(10, 80)] private float verticalDownViewLimit = 80.0f;
     [SerializeField, Range(0, 160)] private float horizontalViewLimit = 160.0f;
@@ -21,6 +20,7 @@ public class PlayerView : MonoBehaviour
     private float leftViewLimit;
     private readonly int standardFieldOfView = 60;
     private int finalLayerMask;
+    private int aimHelperLayerMask;
 
     void Awake()
     {
@@ -32,7 +32,7 @@ public class PlayerView : MonoBehaviour
         lowerViewLimit = verticalDownViewLimit;
         rightViewLimit = fullCircleDegrees - horizontalViewLimit;
         leftViewLimit = horizontalViewLimit;
-        int aimHelperLayerMask = 1 << LayerMask.NameToLayer("AimHelper");
+        aimHelperLayerMask = 1 << LayerMask.NameToLayer("AimHelper");
         finalLayerMask = ~aimHelperLayerMask;
     }
 
@@ -51,14 +51,42 @@ public class PlayerView : MonoBehaviour
         Vector3 currentRotation = transform.localEulerAngles;
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
-        Vector2 orientationVector = new Vector2(mouseX, mouseY).normalized * orientationSpeed;
+        Vector2 orientationVector = new Vector2(mouseX, mouseY);
+
+        // Very beautiful code incoming
+        if (orientationVector.magnitude < 0.1f)
+        {
+            return;
+        }
+
+        int horizontalSomething = orientationVector.x > 0 ? 1 : -1;
+        int verticalSomething = orientationVector.y > 0 ? 1 : -1;
+
+        Vector2 horizontalVector = new Vector2(horizontalSomething, 0);
+        Vector2 verticalVector = new Vector2(0, verticalSomething);
+        Vector2 diagonalVector = new Vector2(0.7f * horizontalSomething, 0.7f * verticalSomething);
+
+        float bestDot = Vector2.Dot(orientationVector, horizontalVector);
+        Vector2 bestVector = horizontalVector;
+
+        float dot = Vector2.Dot(orientationVector, verticalVector);
+        if (dot > bestDot)
+        {
+            bestDot = dot;
+            bestVector = verticalVector;
+        }
+        dot = Vector2.Dot(orientationVector, diagonalVector);
+        if (dot > bestDot)
+        {
+            bestVector = diagonalVector;
+        }
+
+        orientationVector = bestVector * orientationSpeed;
+        // Very beautiful code done
+
         orientationVector = isZoomed ? orientationVector * zoom : orientationVector;
         int zoomedFieldOfView = isZoomed ? standardFieldOfView - fieldOfViewZoom : standardFieldOfView;
         thisCamera.fieldOfView = Mathf.Lerp(thisCamera.fieldOfView, zoomedFieldOfView, Time.deltaTime * zoomTime);
-        /*if (orientationVector.magnitude > orientationSpeedLimitMouse) The system this will be build for, will always either give max or non input, so this is not needed
-        {
-            orientationVector = orientationVector.normalized * orientationSpeedLimitMouse;
-        }*/
 
         float newRotationX = currentRotation.x - orientationVector.y;
         if (newRotationX < upperViewLimit && newRotationX > halfCircleDegrees)
