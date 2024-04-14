@@ -106,7 +106,6 @@ public class CorePixel : MonoBehaviour, ForceHitDetector
         {
             for (int i = 0; i < pixelGrid.xWidth; i++)
             {
-                Debug.Log("i: " + i + " y: " + y);
                 Pixel pixel = pixelGrid.GetPixelGridPosition(i, y);
                 if (pixel != null && !surroundingPixels.Contains(pixel))
                 {
