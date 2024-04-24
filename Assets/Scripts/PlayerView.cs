@@ -49,38 +49,173 @@ public class PlayerView : MonoBehaviour
     {
         //TODO: There should be a aiming timer, so you can't zoom in and out all the time using the helper to find the best spot. Should not be a long timer though
         isZoomed = Input.GetMouseButton(1);
-        wasAimingLastFrame = (wasAimingLastFrame && isZoomed) || (isZoomed && !wasAimingLastFrame);
         HandleOrientation();
         if (Input.GetMouseButtonDown(0))
         {
             HandleAttack();
         }
+        wasAimingLastFrame = (wasAimingLastFrame && isZoomed) || (isZoomed && !wasAimingLastFrame);
     }
 
     private void HandleOrientation()
     {
         Vector3 currentForward = transform.forward;
-        Vector3 currentRotation = transform.localEulerAngles;
+        //Debug.Log(currentRotation.x + " " + currentRotation.y + " " + currentRotation.z);
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
-        Vector2 orientationVector = new Vector2(mouseX, mouseY);
-
+        Vector2 orientation = new Vector2(mouseX, mouseY);
         // This zoom logic should probably be in a separate method / or class, yea... wuhuu ma dudes :D
         int zoomedFieldOfView = isZoomed ? standardFieldOfView - fieldOfViewZoom : standardFieldOfView;
         thisCamera.fieldOfView = Mathf.Lerp(thisCamera.fieldOfView, zoomedFieldOfView, Time.deltaTime * zoomTime);
 
-        // Very beautiful code incoming
-        if (orientationVector.magnitude < 0.1f)
+        orientation = DirectionalVector8(orientation);
+        if (isZoomed)
         {
-            return;
+            Vector2 zoomedVector = AimingOrientationHelper(orientation);
+            orientation = orientationSpeed * Time.deltaTime * zoom * zoomedVector;
+        }
+        else
+        {
+            orientation = orientationSpeed * Time.deltaTime * orientation;
         }
 
-        int horizontalSign = orientationVector.x > 0 ? 1 : -1;
-        int verticalSign = orientationVector.y > 0 ? 1 : -1;
+        Vector3 currentRotation = transform.localEulerAngles;
+        float newRotationX = currentRotation.x - orientation.y;
+        if (newRotationX < upperViewLimit && newRotationX > halfCircleDegrees)
+        {
+            newRotationX = upperViewLimit;
+        }
+        else if (newRotationX > lowerViewLimit && newRotationX < halfCircleDegrees)
+        {
+            newRotationX = lowerViewLimit;
+        }
 
-        float biggestDot = orientationVector.x * horizontalSign; //horizontalDot but just naming it biggest since I start with it
-        float verticalDot = orientationVector.y * verticalSign;
-        float diagonalDot = 0.7f * (orientationVector.x * horizontalSign) + 0.7f * (orientationVector.y * verticalSign);
+        float newRotationY = currentRotation.y + orientation.x;
+        if (newRotationY > leftViewLimit && newRotationY < halfCircleDegrees)
+        {
+            newRotationY = leftViewLimit;
+        }
+        else if (newRotationY < rightViewLimit && newRotationY > halfCircleDegrees)
+        {
+            newRotationY = rightViewLimit;
+        }
+
+        transform.localRotation = Quaternion.Euler(newRotationX, newRotationY, 0);
+        lastAimVector = currentForward;
+    }
+
+    private Vector2 AimingOrientationHelper(Vector2 orientationVector) //Might have been better do use the newer/next orientation instead of last frame, but... I've come this far
+    {
+        Vector3 currentPosition = transform.position; //Should alway be the same, so maybe this should be in the start method
+        Vector3 direction = transform.forward;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit[] hits = Physics.RaycastAll(ray, shootingDistance, aimHelperLayerMask);
+
+        if (hits.Length == 0)
+        {
+            return orientationVector;
+        }
+
+        Vector3 bestPerpendicularVector = Vector3.zero;
+        Vector3 bestReferencePoint = Vector3.zero;
+        //Vector3 enemyHitPosition = Vector3.zero;
+        float length = -1;
+        foreach (RaycastHit hit in hits)
+        {
+            Vector3 colliderHitPosition = hit.collider.transform.position;
+            Vector3 projection = Vector3.Project(colliderHitPosition - currentPosition, direction);
+            Vector3 perpendicularVector = colliderHitPosition - currentPosition - projection;
+            float perpendicularVectorLength = perpendicularVector.magnitude;
+
+            Debug.DrawLine(colliderHitPosition, colliderHitPosition - perpendicularVector, Color.black); //Just wanna se the perpendicular line
+
+            Vector3 oldProjection = Vector3.Project(colliderHitPosition - currentPosition, lastAimVector);
+            Vector3 perpendicularVectorOld = colliderHitPosition - currentPosition - oldProjection;
+            float perpendicularVectorLengthOld = perpendicularVectorOld.magnitude;
+            if (perpendicularVectorLengthOld >= perpendicularVectorLength && (length < 0 || length > perpendicularVectorLength))
+            {
+                bestPerpendicularVector = perpendicularVector;
+                bestReferencePoint = currentPosition + projection;
+                length = perpendicularVectorLength;
+                //enemyHitPosition = colliderHitPosition;
+            }
+        }
+        if (bestReferencePoint != Vector3.zero && !wasAimingLastFrame)
+        {
+            if (length > distanceStage1)
+            {
+                Debug.Log("Stage 0");
+            }
+            else if (length < distanceStage1 && length > distanceStage2)
+            {
+                FigureNameOutLater(bestPerpendicularVector, bestReferencePoint, 0.10f); //Stage percentage should be a editable value
+                Debug.Log("Stage 1");
+            }
+            else if (length < distanceStage2 && length > distanceStage3)
+            {
+                FigureNameOutLater(bestPerpendicularVector, bestReferencePoint, 0.25f);
+                Debug.Log("Stage 2");
+            }
+            else if (length < distanceStage3 && length > distanceStage4)
+            {
+                FigureNameOutLater(bestPerpendicularVector, bestReferencePoint, 0.50f);
+                Debug.Log("Stage 3");
+            }
+            else
+            {
+                FigureNameOutLater(bestPerpendicularVector, bestReferencePoint, 0.80f);
+                Debug.Log("Stage 4");
+            }
+        }
+
+        Vector2 targetDirection2D = TransformTo2dSpace(bestReferencePoint, bestPerpendicularVector);
+        float orientationDot = Vector2.Dot(targetDirection2D.normalized, orientationVector);
+        if (orientationDot <= 0)
+            return orientationVector;
+
+        Vector2 vectorBetween = targetDirection2D - orientationVector;
+        return (orientationVector + vectorBetween * orientationDot).normalized;
+    }
+
+    private void FigureNameOutLater(Vector3 direction, Vector3 startingPosition, float directionTravelPercentage)
+    {
+        Vector3 targetPosition = startingPosition + direction * directionTravelPercentage;
+        Quaternion targetRotation = Quaternion.LookRotation(targetPosition - transform.position);
+        transform.localRotation = targetRotation;
+    }
+
+    private Vector2 TransformTo2dSpace(Vector3 referencePoint, Vector3 toTransform)
+    {
+        //Making a right handed coordinate system
+        /* Decided to go with another approach, but saving in case i need inspiration later in life... like surely I will check this out again... right?
+        Vector3 zDirection = transform.forward * -1 + referencePoint;
+        Vector3 xDirection = transform.right + referencePoint;
+        Vector3 yDirection = transform.up + referencePoint;
+        Debug.DrawLine(referencePoint, zDirection, Color.blue);
+        Debug.DrawLine(referencePoint, xDirection, Color.red);
+        Debug.DrawLine(referencePoint, yDirection, Color.green);
+        */
+
+        Vector3 ex = Vector3.Cross(transform.up, transform.forward).normalized;
+        Vector3 ey = Vector3.Cross(transform.forward, ex).normalized;
+        Debug.DrawLine(referencePoint, referencePoint + ex, Color.red);
+        Debug.DrawLine(referencePoint, referencePoint + ey, Color.green);
+        return new Vector2(Vector3.Dot(toTransform, ex), Vector3.Dot(toTransform, ey));
+    }
+
+    private Vector2 DirectionalVector8(Vector2 orientation)
+    {
+        if (orientation.magnitude < 0.1f)
+        {
+            return Vector2.zero;
+        }
+
+        int horizontalSign = orientation.x > 0 ? 1 : -1;
+        int verticalSign = orientation.y > 0 ? 1 : -1;
+
+        float biggestDot = orientation.x * horizontalSign; //horizontalDot but just naming it biggest since I start with it
+        float verticalDot = orientation.y * verticalSign;
+        float diagonalDot = 0.7f * (orientation.x * horizontalSign) + 0.7f * (orientation.y * verticalSign);
 
         Vector2 bestVector = new Vector2(horizontalSign, 0);
 
@@ -95,117 +230,8 @@ public class PlayerView : MonoBehaviour
             bestVector = new Vector2(0.7f * horizontalSign, 0.7f * verticalSign);
         }
 
-        if (isZoomed)
-        {
-            ;
-            AimingOrientationHelper(bestVector);
-        }
-
-        orientationVector = bestVector * orientationSpeed;
-        // Very beautiful code done
-
-        orientationVector = isZoomed ? orientationVector * zoom : orientationVector;
-
-        float newRotationX = currentRotation.x - orientationVector.y;
-        if (newRotationX < upperViewLimit && newRotationX > halfCircleDegrees)
-        {
-            newRotationX = upperViewLimit;
-        }
-        else if (newRotationX > lowerViewLimit && newRotationX < halfCircleDegrees)
-        {
-            newRotationX = lowerViewLimit;
-        }
-
-        float newRotationY = currentRotation.y + orientationVector.x;
-        if (newRotationY > leftViewLimit && newRotationY < halfCircleDegrees)
-        {
-            newRotationY = leftViewLimit;
-        }
-        else if (newRotationY < rightViewLimit && newRotationY > halfCircleDegrees)
-        {
-            newRotationY = rightViewLimit;
-        }
-
-        transform.localRotation = Quaternion.Euler(newRotationX, newRotationY, 0);
-        lastAimVector = currentForward;
+        return bestVector;
     }
-
-    private void AimingOrientationHelper(Vector2 orientationVector) //TODO: might not need orientationVector
-    {
-        Vector3 currentPosition = transform.position; //Should alway be the same, so maybe this should be in the start method
-        Vector3 direction = transform.forward;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit[] hits = Physics.RaycastAll(ray, shootingDistance, aimHelperLayerMask);
-
-        if (hits.Length == 0)
-        {
-            return;
-        }
-
-        Vector3 bestPerpendicularVector = Vector3.zero;
-        Vector3 bestPerpendicularPoint = Vector3.zero;
-        float length = -42069;
-        foreach (RaycastHit hit in hits)
-        {
-            Vector3 colliderHitPosition = hit.collider.transform.position;
-            Vector3 projection = Vector3.Project(colliderHitPosition - currentPosition, direction);
-            Vector3 perpendicularVector = colliderHitPosition - currentPosition - projection;
-            float perpendicularVectorLength = perpendicularVector.magnitude;
-
-            Debug.DrawLine(colliderHitPosition, colliderHitPosition - perpendicularVector, Color.red); //Just wanna se the perpendicular line
-
-
-            Vector3 oldProjection = Vector3.Project(colliderHitPosition - currentPosition, lastAimVector);
-            Vector3 perpendicularVectorOld = colliderHitPosition - currentPosition - oldProjection;
-            float perpendicularVectorLengthOld = perpendicularVectorOld.magnitude;
-            if (perpendicularVectorLengthOld > perpendicularVectorLength && (length == -42069 || length > perpendicularVectorLength))
-            {
-                bestPerpendicularVector = perpendicularVector;
-                bestPerpendicularPoint = currentPosition + projection;
-                length = perpendicularVectorLength;
-            }
-        }
-        if (bestPerpendicularPoint != Vector3.zero)
-        {
-            Debug.DrawLine(bestPerpendicularPoint, Vector3.up * 10, Color.green);
-            Debug.Log("Length: " + length);
-            if (length > distanceStage1)
-            {
-                Debug.Log("Stage 0");
-            }
-            else if (length < distanceStage1 && length > distanceStage2)
-            {
-                Debug.Log("Stage 1");
-            }
-            else if (length < distanceStage2 && length > distanceStage3)
-            {
-                Debug.Log("Stage 2");
-            }
-            else if (length < distanceStage3 && length > distanceStage4)
-            {
-                Debug.Log("Stage 3");
-            }
-            else
-            {
-                Debug.Log("Stage 4");
-            }
-
-        }
-    }
-
-    private void FigureNameOutLater(Vector3 direction, Vector3 startingPosition)
-    {
-
-    }
-
-
-    /*Remember this for aim helper, might be useful
-
-        Vector3 aimingDirection = // your aiming direction vector
-        Quaternion targetRotation = Quaternion.LookRotation(aimingDirection);
-        transform.rotation = targetRotation; 
-
-    */
 
     private void HandleAttack()
     {
