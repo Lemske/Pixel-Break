@@ -10819,6 +10819,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5716440055708252790, guid: 71479ea7801c43e4fb45cbca0f67cd2d, type: 3}
   m_PrefabInstance: {fileID: 986467141}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &987379674 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4920012369574089870, guid: 71479ea7801c43e4fb45cbca0f67cd2d, type: 3}
+  m_PrefabInstance: {fileID: 1663517802}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &992511406
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18331,7 +18336,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5716440055708252790, guid: 71479ea7801c43e4fb45cbca0f67cd2d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.622
+      value: 2.564
       objectReference: {fileID: 0}
     - target: {fileID: 5716440055708252790, guid: 71479ea7801c43e4fb45cbca0f67cd2d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -19205,13 +19210,39 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5716440055708252790, guid: 71479ea7801c43e4fb45cbca0f67cd2d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 255969818}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4920012369574089870, guid: 71479ea7801c43e4fb45cbca0f67cd2d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1663517804}
   m_SourcePrefab: {fileID: 100100000, guid: 71479ea7801c43e4fb45cbca0f67cd2d, type: 3}
 --- !u!4 &1663517803 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5716440055708252790, guid: 71479ea7801c43e4fb45cbca0f67cd2d, type: 3}
   m_PrefabInstance: {fileID: 1663517802}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1663517804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 987379674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e1188dcc283b6f48bb7fa7e7a201699, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vDirThreshold: 0.7
+  hDirThreshold: 0.7
+  vClearThreshold: 0.9
+  hClearThreshold: 0.9
+  distanceMultiplier: 2
+  maxForce: 10
+  disconnectedReducer: 2
+  points: 100
+  pointsDecayPercentage: 10
+  aimHelperRadius: 1
+  aimingSphere: {fileID: 8701440816693552721, guid: 49bf87d3c7c097e4f98c2b4a78428a5d, type: 3}
 --- !u!1001 &1670336484
 PrefabInstance:
   m_ObjectHideFlags: 0
