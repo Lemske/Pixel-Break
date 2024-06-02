@@ -1,154 +1,62 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
-
-enum Direction
+public enum Direction
 {
     LEFT,
-    RIGHT
+    RIGHT,
+    SIDE
 }
-
 public class SkullMovement : MonoBehaviour
 {
     [SerializeField] private GameObject player;
-    [SerializeField] private int directionChangeChance = 70;
-    [SerializeField] private float movementWidth = 5;
-    [SerializeField] private float movementLength = 5;
-    [SerializeField] private float movementHeight = 5;
-    [SerializeField] private float minMovementLength = 1;
-    [SerializeField] private float minDistanceToGround = 1.5f;
-    [SerializeField] private float maxDistanceToGround = 10;
+    [SerializeField] public int directionChangeChance = 70;
+    [SerializeField] public float movementWidth = 5;
+    [SerializeField] public float movementLength = 5;
+    [SerializeField] public float movementHeight = 5;
+    [SerializeField] public float minMovementLength = 1;
+    [SerializeField] public float minDistanceToGround = 1.5f;
+    [SerializeField] public float maxDistanceToGround = 10;
+    [SerializeField] public float idleSpeed = 1;
+    [SerializeField] public float idleTime = 1;
+    [SerializeField] public float idleRotationSpeed = 5;
+    [SerializeField] public float movementSpeed = 4;
 
-    private Direction direction = Direction.RIGHT; // Default direction
+    public Direction direction;
+    public SkullState state;
 
     void Start()
     {
-        direction = Math.Round(UnityEngine.Random.Range(0f, 1f)) == 0 ? Direction.LEFT : Direction.RIGHT;
-        Debug.Log(direction);
-        LookAtPlayer();
+        state = new DirectionPickerState(this, player);
     }
+
     void Update()
     {
-
-        LookAtPlayer();
+        state.Action();
     }
 
-    private void ChangeDirection()
+    public void Move(Vector3 direction)
     {
-        if (UnityEngine.Random.Range(0, 100) < directionChangeChance)
-        {
-            direction = direction == Direction.LEFT ? Direction.RIGHT : Direction.LEFT;
-        }
+        transform.position += direction;
     }
 
-    private void LookAtPlayer()
+    public void SmoothLook(Vector3 direction, float speed = 1)
     {
-        switch (direction)
-        {
-            case Direction.RIGHT:
-                transform.LookAt(player.transform);
-                break;
-            case Direction.LEFT:
-                transform.rotation = Quaternion.LookRotation(-(player.transform.position - transform.position));
-                break;
-        }
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * Time.deltaTime);
     }
 
-    private TravelBox[] GetTravelBoxes()
+    public Transform GetTransform()
     {
-        Vector3 lookDirection = transform.forward;
-        if (direction == Direction.LEFT)
-        {
-            lookDirection = -transform.forward;
-        }
-        float lengthAway = minMovementLength + (movementLength / 2);
-        Vector3 right = transform.right * movementWidth / 2;
-        Vector3 left = -right;
-
-        if (direction == Direction.LEFT)
-        {
-            right = -right;
-            left = -left;
-        }
-
-        Vector3 rightCenterRegion = lookDirection * lengthAway + transform.position + right;
-        Vector3 leftCenterRegion = lookDirection * lengthAway + transform.position + left;
-
-        TravelBox[] travelBoxes = new TravelBox[2];
-        travelBoxes[0] = new TravelBox
-        {
-            center = rightCenterRegion,
-            rotation = Quaternion.LookRotation(lookDirection)
-        };
-
-        travelBoxes[1] = new TravelBox
-        {
-            center = leftCenterRegion,
-            rotation = Quaternion.LookRotation(lookDirection)
-        };
-
-        Vector3 rightLowestVertice = GetLowestVertice(travelBoxes[0]);
-
-        if (rightLowestVertice.y < minDistanceToGround)
-        {
-            Vector3 upDirection = transform.up;
-            float yDif = minDistanceToGround - rightLowestVertice.y;
-            Vector3 toAdd = upDirection * (yDif / upDirection.y);
-            travelBoxes[0].center += toAdd;
-            travelBoxes[1].center += toAdd;
-
-            return travelBoxes;
-        }
-
-        Vector3 rightHighestVertice = GetLowestVertice(travelBoxes[0], false);
-
-        if (rightHighestVertice.y > maxDistanceToGround)
-        {
-            Vector3 upDirection = -transform.up;
-            float yDif = rightHighestVertice.y - maxDistanceToGround;
-            Vector3 toAdd = upDirection * (yDif / upDirection.y);
-            travelBoxes[0].center -= toAdd;
-            travelBoxes[1].center -= toAdd;
-        }
-
-        return travelBoxes;
-    }
-
-    private Vector3 GetLowestVertice(TravelBox travelBox, bool checkLowest = true)
-    {
-        Vector3 center = travelBox.center;
-        Quaternion rotation = travelBox.rotation;
-
-        float halfWidth = movementWidth / 2;
-        float halfLength = movementLength / 2;
-        float halfHeight = movementHeight / 2;
-
-        halfHeight = checkLowest ? -halfHeight : halfHeight;
-
-        Vector3[] localVertices = new Vector3[]
-        {
-            new Vector3(halfWidth, halfHeight, -halfLength),
-            new Vector3(halfWidth, halfHeight, halfLength)
-        };
-
-        Vector3 lowestVertice = Vector3.positiveInfinity;
-
-        for (int i = 0; i < localVertices.Length; i++)
-        {
-            Vector3 worldVertice = center + rotation * localVertices[i];
-            if (worldVertice.y < lowestVertice.y)
-            {
-                lowestVertice = worldVertice;
-            }
-        }
-        return lowestVertice;
+        return transform;
     }
 
     private void OnDrawGizmos()
     {
         Vector3 lookDirection = transform.forward;
-        TravelBox[] travelBoxes = GetTravelBoxes();
+        TravelBox[] travelBoxes = Utils.GenerateTravelBoxes(direction, transform, movementLength, movementWidth, movementHeight, minMovementLength, minDistanceToGround, maxDistanceToGround);
         TravelBox rightTravelBox = travelBoxes[0];
         TravelBox leftTravelBox = travelBoxes[1];
 
@@ -162,10 +70,4 @@ public class SkullMovement : MonoBehaviour
 
         Gizmos.matrix = Matrix4x4.identity;
     }
-}
-
-class TravelBox
-{
-    public Vector3 center;
-    public Quaternion rotation;
 }
