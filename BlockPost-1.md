@@ -11,17 +11,20 @@ The movement is quite simple in this game. You cant influence the characters loc
 ### Combat
 
 The player can shoot with the scope in the middle. When hitting the enemy and killing it, as of right now there is a score. As off right now the score doesn't do anything, since I don't yet know if i want a money based or high-score based game.
+
 ![Alt text](MDPictures/ScoreInitial.png)
 
 ### Enemies
 
 The enemies are comprised of "pixels", or rather cubes. When hitting the enemy it breaks into smaller pieces, and if you hit the core of the enemy, it dies and explodes.
+
 ![Alt text](MDPictures/EnemyInitial.png)
 ![Alt text](MDPictures/BreakingEnemyInitial.png)
 
 ### Spawner
 
 I have made an enemy spawner, which can spawn enemies within a duration.
+
 ![Alt text](MDPictures/SpawnerInitial.jpg)
 
 ### Whats next?
