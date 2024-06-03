@@ -16,4 +16,10 @@ public class MainMenuController : MonoBehaviour
         Debug.Log("Quit Game");
         Application.Quit();
     }
+
+    public void PlayAgain()
+    {
+        ScoreCanvasController.ResetScore();
+        PlayGame();
+    }
 }

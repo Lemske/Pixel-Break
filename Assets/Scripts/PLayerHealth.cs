@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class PLayerHealth : MonoBehaviour //TODO: check if interface is needed
 {
@@ -15,15 +17,12 @@ public class PLayerHealth : MonoBehaviour //TODO: check if interface is needed
     public void TakeDamage(int damage)
     {
         health -= damage;
-        if (healthBar == null)
-        {
-            Debug.Log("WHYYY");
-            return;
-        }
         healthBar.UpdateHealthBar(health);
         if (health <= 0)
         {
-            Debug.Log("Øv, du sutter");
+            Cursor.lockState = CursorLockMode.None; //TODO: should be able to move with xbox controller
+
+            SceneManager.LoadScene("GameOver");
         }
     }
 

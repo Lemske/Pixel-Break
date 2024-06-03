@@ -186,7 +186,7 @@ public class CorePixel : MonoBehaviour, ForceHitDetector
         transform.AddComponent<Rigidbody>().AddForce(force * maxForce, ForceMode.Impulse);
         ApplyForceToPixels(GetAllRemainingPixelsPositions(), force, new Vector2(xHitPos, yHitPos));
         scoreCanvasController.AddScore(Mathf.RoundToInt(points * Mathf.Pow(1 - pointsDecayPercentage / 100f, hitCount)), ScoreCanvasController.ScoreType.Normal);
-        SimpleMovement simpleMovement = transform.GetComponent<SimpleMovement>();
+        SimpleMovement simpleMovement = transform.GetComponent<SimpleMovement>(); //TODO: Clean the fuck up
         if (simpleMovement != null)
         {
             simpleMovement.enabled = false;

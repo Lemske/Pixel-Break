@@ -23,10 +23,7 @@ public class HealthBarController : MonoBehaviour
     public void UpdateHealthBar(int health)
     {
         float percentage = (float)health / totalHealth;
-        Debug.Log(percentage);
         float widthLeft = initialWidth * percentage;
-        Debug.Log(initialX);
-        Debug.Log(widthLeft);
         healthColorBarPrefab.sizeDelta = new Vector2(widthLeft, healthColorBarPrefab.sizeDelta.y);
         healthColorBarPrefab.anchoredPosition = new Vector2(initialX - (initialWidth - widthLeft) / 2, healthColorBarPrefab.anchoredPosition.y);
     }

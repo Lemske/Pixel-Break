@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class ScoreCanvasController : MonoBehaviour //TODO: This is fine for now, but it should be more dynamic
 {
-    private int remainingScore = 0;
-
+    public int remainingScore = 0;
+    public static int totalScore { get; private set; } = 0;
     [Header("Score Display")]
     [SerializeField] private ScoreCounter scoreField; //TODO: Add animation to score
     //TODO: Add animation to score
@@ -29,5 +29,11 @@ public class ScoreCanvasController : MonoBehaviour //TODO: This is fine for now,
     public void AddScore(int score, ScoreType scoreType) //TODO: Add scoreType animation loops and count when to shift to normal
     {
         remainingScore += score;
+        totalScore += score;
+    }
+
+    public static void ResetScore()
+    {
+        totalScore = 0;
     }
 }
