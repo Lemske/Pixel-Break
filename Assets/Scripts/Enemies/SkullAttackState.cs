@@ -90,6 +90,7 @@ public class SkullAttackState : SkullState
             timer -= Time.deltaTime;
             if (timer <= 0)
             {
+                skullAttackState.skull.Attack();
                 skullAttackState.move = new Move3(skullAttackState);
             }
         }
@@ -114,7 +115,6 @@ public class SkullAttackState : SkullState
 
             if (Vector3.Distance(skullAttackState.skull.transform.position, skullAttackState.fallBackPosition) < 0.01f)
             {
-                skullAttackState.player.GetComponent<PLayerHealth>().TakeDamage(20);
                 skullAttackState.move = new Move4(skullAttackState);
             }
         }

@@ -146,27 +146,22 @@ public class PlayerView : MonoBehaviour
         {
             if (length > distanceStage1)
             {
-                Debug.Log("Stage 0");
             }
             else if (length < distanceStage1 && length > distanceStage2)
             {
                 FigureNameOutLater(bestPerpendicularVector, bestReferencePoint, 0.10f); //Stage percentage should be a editable value
-                Debug.Log("Stage 1");
             }
             else if (length < distanceStage2 && length > distanceStage3)
             {
                 FigureNameOutLater(bestPerpendicularVector, bestReferencePoint, 0.25f);
-                Debug.Log("Stage 2");
             }
             else if (length < distanceStage3 && length > distanceStage4)
             {
                 FigureNameOutLater(bestPerpendicularVector, bestReferencePoint, 0.50f);
-                Debug.Log("Stage 3");
             }
             else
             {
                 FigureNameOutLater(bestPerpendicularVector, bestReferencePoint, 0.80f);
-                Debug.Log("Stage 4");
             }
         }
 

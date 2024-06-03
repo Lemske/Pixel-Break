@@ -23,6 +23,7 @@ public class SkullMovement : MonoBehaviour
     [SerializeField] public float idleTime = 1;
     [SerializeField] public float idleRotationSpeed = 5;
     [SerializeField] public float movementSpeed = 4;
+    private PLayerHealth playerHealth;
 
     public Direction direction;
     public SkullState state;
@@ -30,6 +31,7 @@ public class SkullMovement : MonoBehaviour
     void Start()
     {
         state = new DirectionPickerState(this, player);
+        playerHealth = FindObjectOfType<PLayerHealth>();
     }
 
     void Update()
@@ -51,6 +53,11 @@ public class SkullMovement : MonoBehaviour
     public Transform GetTransform()
     {
         return transform;
+    }
+
+    public void Attack()
+    {
+        playerHealth.TakeDamage(20);
     }
 
     private void OnDrawGizmos()
