@@ -103,4 +103,23 @@ public static class Utils
         // Smoothstep-like easing function
         return t * t * (3f - 2f * t);
     }
+
+    public static void TravelDestinationCorrection(Vector3 travelDestination, Vector3 playerPosition, float minY, float maxY)
+    {
+        List<Vector3>[] bounds = PlayerView.InBoundsVectors;
+        for (int i = 0; i < bounds[1].Count; i++)
+        {
+            Vector3 fromPlayerToDestination = travelDestination - playerPosition;
+            float dotProduct = Vector3.Dot(fromPlayerToDestination.normalized, bounds[1][i]);
+            if (dotProduct < 0)
+            { //Might need to be bigger
+                Vector3 projection = Vector3.Project(fromPlayerToDestination, bounds[0][i]);
+                Vector3 correctionVector = projection - fromPlayerToDestination;
+                Debug.DrawLine(travelDestination, travelDestination + correctionVector, Color.red, 10);
+                travelDestination = travelDestination + correctionVector + correctionVector.normalized * 2;
+                travelDestination.y = travelDestination.y < minY ? minY : travelDestination.y;
+                travelDestination.y = travelDestination.y > maxY ? maxY : travelDestination.y;
+            }
+        }
+    }
 }

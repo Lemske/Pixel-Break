@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerView : MonoBehaviour
@@ -6,6 +7,7 @@ public class PlayerView : MonoBehaviour
     [SerializeField, Range(10, 80)] private float verticalUpViewLimit = 80.0f;
     [SerializeField, Range(10, 80)] private float verticalDownViewLimit = 80.0f;
     [SerializeField, Range(0, 160)] private float horizontalViewLimit = 160.0f;
+    [SerializeField] private GameObject limiterCube;
     [Header("Aiming Settings")]
     [SerializeField] private float orientationSpeed = 1.0f;
     [SerializeField] private float zoom = 0.5f;
@@ -30,7 +32,7 @@ public class PlayerView : MonoBehaviour
     private readonly int standardFieldOfView = 60;
     private int finalLayerMask;
     private int aimHelperLayerMask;
-
+    public static List<Vector3>[] InBoundsVectors { get; private set; } //Listen, I know all these classes are messy, if i have time I'll clean up
     void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -43,6 +45,7 @@ public class PlayerView : MonoBehaviour
         leftViewLimit = horizontalViewLimit;
         aimHelperLayerMask = 1 << LayerMask.NameToLayer("AimHelper");
         finalLayerMask = ~aimHelperLayerMask;
+        InBoundsVectors = LimiterCalculation();
     }
 
     void Update()
@@ -60,7 +63,6 @@ public class PlayerView : MonoBehaviour
     private void HandleOrientation()
     {
         Vector3 currentForward = transform.forward;
-        //Debug.Log(currentRotation.x + " " + currentRotation.y + " " + currentRotation.z);
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
         Vector2 orientation = new Vector2(mouseX, mouseY);
@@ -195,7 +197,6 @@ public class PlayerView : MonoBehaviour
         Debug.DrawLine(referencePoint, xDirection, Color.red);
         Debug.DrawLine(referencePoint, yDirection, Color.green);
         */
-
         Vector3 ex = Vector3.Cross(transform.up, transform.forward).normalized;
         Vector3 ey = Vector3.Cross(transform.forward, ex).normalized;
         Debug.DrawLine(referencePoint, referencePoint + ex, Color.red);
@@ -243,10 +244,52 @@ public class PlayerView : MonoBehaviour
         }
     }
 
+    private List<Vector3>[] LimiterCalculation()
+    {
+        List<Vector3> limiterForwards = new List<Vector3>();
+        List<Vector3> limiterVector = new List<Vector3>();
+        int fullCircleDegrees = 360; //Jep, right now I'm doing this calc again for the gizmos... I know, I know... I'll fix it later
+        float upperViewLimitTemp = fullCircleDegrees - verticalUpViewLimit;
+        float lowerViewLimitTemp = verticalDownViewLimit;
+        float rightViewLimitTemp = fullCircleDegrees - horizontalViewLimit;
+        float leftViewLimitTemp = horizontalViewLimit;
+
+        //The forwardvector is just for show
+        limiterCube.transform.localRotation = Quaternion.Euler(0, rightViewLimitTemp, 0);
+        limiterForwards.Add(limiterCube.transform.forward);
+        limiterVector.Add(limiterCube.transform.right);
+        limiterCube.transform.localRotation = Quaternion.Euler(0, leftViewLimitTemp, 0);
+        limiterForwards.Add(limiterCube.transform.forward);
+        limiterVector.Add(-limiterCube.transform.right);
+        limiterCube.transform.localRotation = Quaternion.Euler(upperViewLimitTemp, 0, 0);
+        limiterForwards.Add(limiterCube.transform.forward);
+        limiterVector.Add(-limiterCube.transform.up);
+        limiterCube.transform.localRotation = Quaternion.Euler(lowerViewLimitTemp, 0, 0);
+        limiterForwards.Add(limiterCube.transform.forward);
+        limiterVector.Add(limiterCube.transform.up);
+
+        return new List<Vector3>[] { limiterForwards, limiterVector };
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
         Vector3 endPoint = transform.position + transform.forward * shootingDistance;
         Gizmos.DrawLine(transform.position, endPoint);
+
+        List<Vector3>[] vectors = LimiterCalculation();
+        List<Vector3> limiterForwards = vectors[0];
+        foreach (Vector3 forward in limiterForwards)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(transform.position, transform.position + forward * shootingDistance);
+        }
+
+        List<Vector3> limiterVector = vectors[1];
+        foreach (Vector3 vector in limiterVector)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(transform.position, transform.position + vector * shootingDistance);
+        }
     }
 }
