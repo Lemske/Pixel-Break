@@ -254,7 +254,7 @@ public class PlayerView : MonoBehaviour
         float rightViewLimitTemp = fullCircleDegrees - horizontalViewLimit;
         float leftViewLimitTemp = horizontalViewLimit;
 
-        //The forwardvector is just for show
+        //The forwardvector is just for show, was what i thought! haha, me genius little man. This is why we dont clean code boooois and gurls
         limiterCube.transform.localRotation = Quaternion.Euler(0, rightViewLimitTemp, 0);
         limiterForwards.Add(limiterCube.transform.forward);
         limiterVector.Add(limiterCube.transform.right);

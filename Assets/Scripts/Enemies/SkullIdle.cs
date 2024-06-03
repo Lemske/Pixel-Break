@@ -15,7 +15,6 @@ public class SkullIdle : SkullState
         this.player = player;
         skull.direction = Direction.SIDE;
         direction = (player.transform.position - skull.transform.position).normalized;
-        Utils.TravelDestinationCorrection(direction, player.transform.position, skull.minDistanceToGround, skull.maxDistanceToGround);
         sideDirection = Vector3.Cross(direction, Vector3.up);
         idleTime = skull.idleTime;
     }
@@ -24,7 +23,7 @@ public class SkullIdle : SkullState
     {
         idleTime -= Time.deltaTime;
 
-        skull.Move(direction * skull.idleSpeed * Time.deltaTime);
+        skull.Move(direction * skull.idleSpeed * Time.deltaTime); //Should check if its withing the boundaries... ha
         skull.SmoothLook(sideDirection, skull.idleRotationSpeed);
 
         if (idleTime <= 0)

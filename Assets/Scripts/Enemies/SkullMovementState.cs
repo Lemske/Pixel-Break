@@ -17,9 +17,13 @@ public class SkullMovementState : SkullState
             skull.minMovementLength, skull.minDistanceToGround, skull.maxDistanceToGround);
         travelBox = skull.direction == Direction.LEFT ? travelBoxes[1] : travelBoxes[0];
         travelDestination = Utils.GetRandomPointInBox(new Vector3(skull.movementWidth, skull.movementHeight, skull.movementLength), travelBox.center, travelBox.rotation);
-        List<Vector3>[] bounds = PlayerView.InBoundsVectors;
 
-        Utils.TravelDestinationCorrection(travelDestination, player.transform.position, skull.minDistanceToGround, skull.maxDistanceToGround);
+        travelDestination = Utils.TravelDestinationCorrection(travelDestination, player.transform.position, skull.minDistanceToGround, skull.maxDistanceToGround);
+        if (SphereBoundaries.IsPointWithinSphere(SphereBoundaries.minDistanceBound, travelDestination))
+        {
+            travelDestination = SphereBoundaries.MovePointOutsideMinDistanceZone(travelDestination);
+            travelDestination = Utils.TravelDestinationCorrection(travelDestination, player.transform.position, skull.minDistanceToGround, skull.maxDistanceToGround);
+        }
     }
 
     public void Action()
@@ -33,7 +37,14 @@ public class SkullMovementState : SkullState
 
         if (Vector3.Distance(skull.transform.position, travelDestination) < 0.1f)
         {
-            skull.state = new SkullIdle(skull, player);
+            if (SphereBoundaries.IsPointWithinSphere(SphereBoundaries.attackBound, skull.transform.position))
+            {
+                skull.state = new SkullAttackState(skull, player);
+            }
+            else
+            {
+                skull.state = new SkullIdle(skull, player);
+            }
         }
     }
 }
