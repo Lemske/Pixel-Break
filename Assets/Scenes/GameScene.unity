@@ -144,6 +144,18 @@ PrefabInstance:
       propertyPath: shootingAudioSource
       value: 
       objectReference: {fileID: 9687251}
+    - target: {fileID: 4502778938326574222, guid: 58b67dc90175e304fbc215a5b0489949, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4502778938326574222, guid: 58b67dc90175e304fbc215a5b0489949, type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1280
+      objectReference: {fileID: 0}
+    - target: {fileID: 4502778938326574222, guid: 58b67dc90175e304fbc215a5b0489949, type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 720
+      objectReference: {fileID: 0}
     - target: {fileID: 5951766481294811155, guid: 58b67dc90175e304fbc215a5b0489949, type: 3}
       propertyPath: healthBar
       value: 
@@ -661,6 +673,18 @@ PrefabInstance:
     - target: {fileID: 6148253946881242564, guid: 4436f65816e9a11439433ee5b6a39af1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7154133099380104798, guid: 4436f65816e9a11439433ee5b6a39af1, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7154133099380104798, guid: 4436f65816e9a11439433ee5b6a39af1, type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1280
+      objectReference: {fileID: 0}
+    - target: {fileID: 7154133099380104798, guid: 4436f65816e9a11439433ee5b6a39af1, type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 720
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
