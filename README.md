@@ -15,3 +15,5 @@ Background Music: https://pixabay.com/music/video-games-pixel-fight-8-bit-arcade
 Shooting Effect: https://pixabay.com/sound-effects/plasma-gun-fire-162136/
 
 Menu control sound: https://pixabay.com/sound-effects/deepscanmp3-14662/
+
+Font: https://www.dafont.com/04b-30.font
