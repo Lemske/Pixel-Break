@@ -59,7 +59,7 @@ public class BackGroundMusic : MonoBehaviour
     public float GetRemainingTime()
     {
         AudioClip clip = audioSource.clip;
-        if (clip == null)
+        if (clip == null || !audioSource.isPlaying)
         {
             return 0;
         }

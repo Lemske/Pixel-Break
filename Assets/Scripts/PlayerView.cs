@@ -21,7 +21,7 @@ public class PlayerView : MonoBehaviour
     [SerializeField] private float distanceStage3 = 0.40f;
     [SerializeField] private float distanceStage4 = 0.20f;
     [Header("Shooting Settings")]
-    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioSource shootingAudioSource;
     // ----------------------------------------------------------------------------
     private bool isZoomed = false;
     private bool wasAimingLastFrame = false;
@@ -53,9 +53,9 @@ public class PlayerView : MonoBehaviour
     void Update()
     {
         //TODO: There should be a aiming timer, so you can't zoom in and out all the time using the helper to find the best spot. Should not be a long timer though
-        isZoomed = Input.GetMouseButton(1);
+        isZoomed = Input.GetButton("Aim");
         HandleOrientation();
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetButtonDown("Fire"))
         {
             HandleAttack();
         }
@@ -65,8 +65,8 @@ public class PlayerView : MonoBehaviour
     private void HandleOrientation()
     {
         Vector3 currentForward = transform.forward;
-        float mouseX = Input.GetAxis("Mouse X");
-        float mouseY = Input.GetAxis("Mouse Y");
+        float mouseX = Input.GetAxis("Horizontal");
+        float mouseY = Input.GetAxis("Vertical");
         Vector2 orientation = new Vector2(mouseX, mouseY);
         // This zoom logic should probably be in a separate method / or class, yea... wuhuu ma dudes :D
         int zoomedFieldOfView = isZoomed ? standardFieldOfView - fieldOfViewZoom : standardFieldOfView;
@@ -237,7 +237,7 @@ public class PlayerView : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, shootingDistance, finalLayerMask) && hit.collider.CompareTag("Enemy") && hit.collider.GetComponent<ForceHitDetector>() != null) //TODO: This looks a bit ugly, maybe just focusing on the component is fine?
         {
-            audioSource.Play();
+            shootingAudioSource.Play();
             hit.collider.GetComponent<ForceHitDetector>().HitWithForce(ray.direction);
         }
     }
