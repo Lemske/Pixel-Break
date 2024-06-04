@@ -1,3 +1,6 @@
+# About
+This is the repo of a school project in GMD1. Here you will find Blog posts, 3rd party sources and a link to youtube.
+
 # Blog Posts
 
 1: https://github.com/Lemske/Pixel-Break/blob/main/BlockPost-1.md
