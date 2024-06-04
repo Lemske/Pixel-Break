@@ -23,6 +23,8 @@ public class SkullMovement : MonoBehaviour
     [SerializeField] public float idleTime = 1;
     [SerializeField] public float idleRotationSpeed = 5;
     [SerializeField] public float movementSpeed = 4;
+    [SerializeField] public AudioClip hissSound;
+    [SerializeField] public AudioClip hitSound;
     private PLayerHealth playerHealth;
 
     public Direction direction;

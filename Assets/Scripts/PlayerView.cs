@@ -20,6 +20,8 @@ public class PlayerView : MonoBehaviour
     [SerializeField] private float distanceStage2 = 0.60f;
     [SerializeField] private float distanceStage3 = 0.40f;
     [SerializeField] private float distanceStage4 = 0.20f;
+    [Header("Shooting Settings")]
+    [SerializeField] private AudioSource audioSource;
     // ----------------------------------------------------------------------------
     private bool isZoomed = false;
     private bool wasAimingLastFrame = false;
@@ -235,6 +237,7 @@ public class PlayerView : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, shootingDistance, finalLayerMask) && hit.collider.CompareTag("Enemy") && hit.collider.GetComponent<ForceHitDetector>() != null) //TODO: This looks a bit ugly, maybe just focusing on the component is fine?
         {
+            audioSource.Play();
             hit.collider.GetComponent<ForceHitDetector>().HitWithForce(ray.direction);
         }
     }

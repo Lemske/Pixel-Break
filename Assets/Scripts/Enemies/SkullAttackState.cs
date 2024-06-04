@@ -13,6 +13,7 @@ public class SkullAttackState : SkullState
     Vector3 horizontalVector;
     Vector3 verticalVector;
     protected SkullState move;
+    protected AudioSource audioSource;
     public SkullAttackState(SkullMovement skull, GameObject player)
     {
         this.skull = skull;
@@ -21,7 +22,7 @@ public class SkullAttackState : SkullState
         horizontalVector = boundingVectors[0] - boundingVectors[1];
         verticalVector = boundingVectors[2] - boundingVectors[3];
         CalculatePositions();
-
+        audioSource = skull.GetComponent<AudioSource>();
         move = new Move1(this);
     }
 
@@ -59,6 +60,7 @@ public class SkullAttackState : SkullState
         public Move1(SkullAttackState skullAttackState)
         {
             this.skullAttackState = skullAttackState;
+            skullAttackState.audioSource.PlayOneShot(skullAttackState.skull.hissSound);
         }
 
         public void Action()
@@ -90,6 +92,7 @@ public class SkullAttackState : SkullState
             timer -= Time.deltaTime;
             if (timer <= 0)
             {
+                skullAttackState.audioSource.PlayOneShot(skullAttackState.skull.hitSound);
                 skullAttackState.skull.Attack();
                 skullAttackState.move = new Move3(skullAttackState);
             }
