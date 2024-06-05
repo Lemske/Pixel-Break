@@ -9,6 +9,7 @@ public class BackGroundMusicSource : MonoBehaviour
     {
         if (BackGroundMusic != null)
         {
+            Debug.Log("Destroying duplicate BackGroundMusicSource");
             Destroy(this.gameObject);
             return;
         }

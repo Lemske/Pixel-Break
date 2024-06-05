@@ -6,54 +6,60 @@ public class BackGroundMusic : MonoBehaviour
 {
     private static IEnumerator audioQueue = null;
     private AudioSource audioSource;
-    [SerializeField] private AudioClip startingAudio;
-    [SerializeField] private AudioClip[] Loop;
-    private int currentLoopIndex = 0;
+    [SerializeField] private Section section;
+    [SerializeField] private Section[] sections;
+    private int currentSectionIndex = 0;
+    private static float currentEndTime = 0;
     void Start()
     {
         audioSource = BackGroundMusicSource.BackGroundMusic;
         if (audioSource == null)
-            return;
-        audioSource.transform.position = transform.position;
+            throw new System.Exception("No AudioSource found on " + this.name);
+
         if (audioQueue != null)
-            StopCoroutine(audioQueue);
-
-        float timeRemaining = GetRemainingTime();
-
-        if (startingAudio != null)
         {
-            audioQueue = PlayFirst(timeRemaining);
-            StartCoroutine(audioQueue);
+            StopCoroutine(audioQueue);
+            audioQueue = null;
         }
+
+        if (!audioSource.isPlaying)
+        {
+            audioSource.time = section.Start;
+            audioSource.Play();
+            currentEndTime = section.End;
+        }
+        else
+        {
+            Debug.Log("Audio is already playing");
+            float remainingTime = GetRemainingTime();
+            Debug.Log("Remaining time: " + remainingTime);
+            remainingTime = remainingTime < 0 ? 0 : remainingTime;
+            Debug.Log("Remaining time: " + remainingTime);
+            StartCoroutine(JumpToNextSection(remainingTime, section.Start, section.End));
+        }
+
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (audioQueue != null && Loop.Length == 0)
+        if (audioQueue != null || sections.Length == 0)
             return;
+
         float timeRemaining = GetRemainingTime();
         if (timeRemaining <= 0.8f)
         {
-            audioQueue = PlayNextLoop(timeRemaining);
+            currentSectionIndex = (currentSectionIndex + 1) % sections.Length;
+            Section tempSection = sections[currentSectionIndex];
+            audioQueue = JumpToNextSection(timeRemaining, tempSection.Start, tempSection.End);
             StartCoroutine(audioQueue);
         }
     }
 
-    private IEnumerator PlayNextLoop(float delay) //Should have combined these play functions and just given them the audio to play as a parameter
+    private IEnumerator JumpToNextSection(float delay, float startingTime, float endingTime)
     {
         yield return new WaitForSeconds(delay);
-        audioSource.clip = Loop[currentLoopIndex];
-        audioSource.Play();
-        currentLoopIndex = (currentLoopIndex + 1) % Loop.Length;
-        audioQueue = null;
-    }
-
-    private IEnumerator PlayFirst(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        audioSource.clip = startingAudio;
-        audioSource.Play();
+        audioSource.time = startingTime;
+        currentEndTime = endingTime;
         audioQueue = null;
     }
 
@@ -64,7 +70,6 @@ public class BackGroundMusic : MonoBehaviour
         {
             return 0;
         }
-
-        return clip.length - audioSource.time;
+        return currentEndTime - audioSource.time;
     }
 }

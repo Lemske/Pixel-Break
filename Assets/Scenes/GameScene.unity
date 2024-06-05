@@ -226,6 +226,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3691831308772229274, guid: 64bacc551ef846549a2e10fe9c27e186, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 6d5613e3b880a4642ac29c2b182540f5, type: 3}
+    - target: {fileID: 3691831308772229274, guid: 64bacc551ef846549a2e10fe9c27e186, type: 3}
       propertyPath: m_PlayOnAwake
       value: 0
       objectReference: {fileID: 0}
@@ -498,12 +502,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07546495c0d5d7e40b0cdd86f522fa7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingAudio: {fileID: 8300000, guid: 2f6b6265dd7060842bb6645068905c2f, type: 3}
-  Loop:
-  - {fileID: 8300000, guid: 2cc15b1fdca9b51449c5fbbb18f3cf5a, type: 3}
-  - {fileID: 8300000, guid: 06ed2ba09d256c942b81840f504a9f07, type: 3}
-  - {fileID: 8300000, guid: 2cc15b1fdca9b51449c5fbbb18f3cf5a, type: 3}
-  - {fileID: 8300000, guid: ae6142f226b2e824c8818f4973ee4a13, type: 3}
+  section:
+    start: 6.082
+    end: 10.152
+  sections:
+  - start: 10.152
+    end: 14.22
+  - start: 14.22
+    end: 18.287
+  - start: 18.287
+    end: 22.355
 --- !u!4 &1366803369
 Transform:
   m_ObjectHideFlags: 0
@@ -763,5 +771,5 @@ SceneRoots:
   - {fileID: 838417778}
   - {fileID: 1023288240}
   - {fileID: 2098713111}
-  - {fileID: 1366803369}
   - {fileID: 593093767}
+  - {fileID: 1366803369}

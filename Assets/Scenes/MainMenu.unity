@@ -433,10 +433,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07546495c0d5d7e40b0cdd86f522fa7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingAudio: {fileID: 8300000, guid: 07070f9ac55bd51489a218407efe1614, type: 3}
-  Loop:
-  - {fileID: 8300000, guid: 7b235193952826742b030476cdd50583, type: 3}
-  - {fileID: 8300000, guid: 8da6f3ddc4b069c48b139fdbfdd1c856, type: 3}
+  section:
+    start: 0
+    end: 2.016
+  sections:
+  - start: 2.016
+    end: 4.05
+  - start: 4.05
+    end: 6.082
 --- !u!4 &730725663
 Transform:
   m_ObjectHideFlags: 0
@@ -597,7 +601,7 @@ PrefabInstance:
     - target: {fileID: 3691831308772229274, guid: 64bacc551ef846549a2e10fe9c27e186, type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8300000, guid: 6d5613e3b880a4642ac29c2b182540f5, type: 3}
     - target: {fileID: 3691831308772229274, guid: 64bacc551ef846549a2e10fe9c27e186, type: 3}
       propertyPath: m_PlayOnAwake
       value: 0
