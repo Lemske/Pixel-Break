@@ -24,13 +24,10 @@ public class TitleCard : MonoBehaviour
 
         TextMeshProUGUI textMeshPro = titleCard.GetComponent<TextMeshProUGUI>();
 
-        // Enable the Outline effect
         textMeshPro.enableVertexGradient = true;
         textMeshPro.enableWordWrapping = true;
-
-        // Adjust the Outline properties
-        textMeshPro.outlineWidth = outlineWidth; // Set the width of the glow effect
-        textMeshPro.outlineColor = Color.green; // Set the color of the glow effect
+        textMeshPro.outlineWidth = outlineWidth;
+        textMeshPro.outlineColor = Color.green;
     }
 
     void Update()
