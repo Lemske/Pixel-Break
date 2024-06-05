@@ -13,7 +13,7 @@ This is the repo of a school project in GMD1. Here you will find Blog posts, 3rd
 
 5: https://github.com/Lemske/Pixel-Break/blob/main/BlockPost-5.md
 
-6
+6: https://github.com/Lemske/Pixel-Break/blob/main/BlockPost-6.md
 
 # 3rd party assets
 
