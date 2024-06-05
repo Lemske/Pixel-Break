@@ -142,7 +142,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3495991288831312955, guid: 58b67dc90175e304fbc215a5b0489949, type: 3}
       propertyPath: zoom
-      value: 0.1
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 3495991288831312955, guid: 58b67dc90175e304fbc215a5b0489949, type: 3}
       propertyPath: shootingAudioSource
@@ -249,10 +249,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a93a26370d743e241861dda4e0a62ce5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  audioSource: {fileID: 0}
-  directionSelectorState: {player: {fileID: 0}, size: 0}
-  direction: 0
 --- !u!65 &309262842
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -443,7 +439,7 @@ PrefabInstance:
       objectReference: {fileID: 3512988513211176205, guid: a72b0fb9b5e1d8d458992ca6275798f3, type: 3}
     - target: {fileID: 2869270682709491449, guid: 312cfdeee246b034aa2e89c764df53a1, type: 3}
       propertyPath: spawnInterval
-      value: 40
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2869270682709491449, guid: 312cfdeee246b034aa2e89c764df53a1, type: 3}
       propertyPath: enemiesToSpawn
@@ -532,7 +528,7 @@ PrefabInstance:
       objectReference: {fileID: 3512988513211176205, guid: a72b0fb9b5e1d8d458992ca6275798f3, type: 3}
     - target: {fileID: 2869270682709491449, guid: 312cfdeee246b034aa2e89c764df53a1, type: 3}
       propertyPath: spawnInterval
-      value: 40
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2869270682709491449, guid: 312cfdeee246b034aa2e89c764df53a1, type: 3}
       propertyPath: enemiesToSpawn
