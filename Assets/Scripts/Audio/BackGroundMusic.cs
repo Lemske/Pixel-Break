@@ -11,9 +11,9 @@ public class BackGroundMusic : MonoBehaviour
     private int currentLoopIndex = 0;
     void Start()
     {
+        audioSource = BackGroundMusicSource.BackGroundMusic;
         if (audioSource == null)
             return;
-        audioSource = BackGroundMusicSource.BackGroundMusic;
         audioSource.transform.position = transform.position;
         if (audioQueue != null)
             StopCoroutine(audioQueue);
@@ -30,8 +30,6 @@ public class BackGroundMusic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (audioSource == null)
-            return;
         if (audioQueue != null && Loop.Length == 0)
             return;
         float timeRemaining = GetRemainingTime();

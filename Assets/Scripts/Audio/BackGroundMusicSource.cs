@@ -5,7 +5,7 @@ using UnityEngine;
 public class BackGroundMusicSource : MonoBehaviour
 {
     public static AudioSource BackGroundMusic;
-    void Start()
+    void Awake()
     {
         if (BackGroundMusic != null)
         {
