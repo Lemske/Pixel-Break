@@ -14,3 +14,4 @@ Link: https://docs.google.com/document/d/1Fj4ImY9y1neuFypJK7_Iww7-hKvBovadtiTnOD
 ### Version 2 - The Initial Draft++
 
 Just added some things to the initial draft, and defined the 3 steps to get the simple game up and running.
+https://docs.google.com/document/d/1jrmkN1n0zrLxS9SI5wAbV19MzrpFg0X3YmKtfR_RwCk/edit?usp=sharing

@@ -141,6 +141,10 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 3495991288831312955, guid: 58b67dc90175e304fbc215a5b0489949, type: 3}
+      propertyPath: zoom
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495991288831312955, guid: 58b67dc90175e304fbc215a5b0489949, type: 3}
       propertyPath: shootingAudioSource
       value: 
       objectReference: {fileID: 9687251}

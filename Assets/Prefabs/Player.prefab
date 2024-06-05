@@ -646,7 +646,7 @@ MonoBehaviour:
   verticalDownViewLimit: 40
   horizontalViewLimit: 60
   limiterCube: {fileID: 7117333851482480519}
-  orientationSpeed: 100
+  orientationSpeed: 80
   zoom: 0.2
   zoomTime: 20
   thisCamera: {fileID: 236232787097712011}
@@ -656,7 +656,7 @@ MonoBehaviour:
   distanceStage2: 0.6
   distanceStage3: 0.4
   distanceStage4: 0.2
-  audioSource: {fileID: 7172647482200102372}
+  shootingAudioSource: {fileID: 0}
 --- !u!1 &6919261021372019840
 GameObject:
   m_ObjectHideFlags: 0

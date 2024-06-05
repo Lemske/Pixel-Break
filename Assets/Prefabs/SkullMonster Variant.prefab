@@ -21794,9 +21794,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1516160708325487896, guid: 58b67dc90175e304fbc215a5b0489949, type: 3}
   directionChangeChance: 70
-  movementWidth: 2.59
-  movementLength: 5.97
-  movementHeight: 4.7
+  movementWidth: 7
+  movementLength: 7
+  movementHeight: 6
   minMovementLength: 2
   minDistanceToGround: 1.5
   maxDistanceToGround: 10
