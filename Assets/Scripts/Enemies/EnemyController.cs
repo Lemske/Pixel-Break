@@ -5,26 +5,20 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour, ForceHitDetector
 {
-    private PixelController pixels;
-    private PixelForceHandler forceHandler;
+    [SerializeField] private PixelController pixels = new PixelController();
+    [SerializeField] private PixelForceHandler forceHandler = new PixelForceHandler();
     private ScoreCanvasController scoreCanvasController;
     private int hitCount = 0;
-    [Header("Aiming Field")] //TODO: Should be own thing
+    //TODO: Should be own things
+    [Header("Aiming Field")]
     [SerializeField] private float aimHelperRadius = 0.5f;
     [SerializeField] private GameObject aimingSphere;
     [Header("Points and Scoring")]
     [SerializeField] private int points = 100;
     [SerializeField] private int pointsDecayPercentage = 10;
+    //TODO: Should be own things
     void Start()
     {
-        pixels = this.GetComponent<PixelController>();
-        if (pixels == null)
-            throw new System.Exception("No PixelController found on " + this.name);
-        forceHandler = this.GetComponent<PixelForceHandler>();
-        if (forceHandler == null)
-            throw new System.Exception("No PixelForceHandler found on " + this.name);
-
-
         pixels.Initialize(gameObject);
         scoreCanvasController = FindObjectOfType<ScoreCanvasController>();
         GameObject sphere = Instantiate(aimingSphere);

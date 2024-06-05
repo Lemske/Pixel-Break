@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class PixelController : MonoBehaviour
+[System.Serializable]
+public class PixelController
 {
     [Header("Horizontal/Vertical Thresholds")]
     [SerializeField, Range(0, 1)] private float vDirThreshold = 0.7f;

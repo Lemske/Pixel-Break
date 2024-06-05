@@ -21751,12 +21751,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4920012369574089870, guid: 71479ea7801c43e4fb45cbca0f67cd2d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2021323563323528640}
-    - targetCorrespondingSourceObject: {fileID: 4920012369574089870, guid: 71479ea7801c43e4fb45cbca0f67cd2d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5338374215718113836}
-    - targetCorrespondingSourceObject: {fileID: 4920012369574089870, guid: 71479ea7801c43e4fb45cbca0f67cd2d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4682422268933925748}
   m_SourcePrefab: {fileID: 100100000, guid: 71479ea7801c43e4fb45cbca0f67cd2d, type: 3}
 --- !u!1 &3512988513211176205 stripped
 GameObject:
@@ -21898,41 +21892,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc3041a057e831d489d5213f9e2c2b53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pixels:
+    vDirThreshold: 0.7
+    hDirThreshold: 0.7
+    vClearThreshold: 0.9
+    hClearThreshold: 0.9
+  forceHandler:
+    distanceMultiplier: 2
+    maxForce: 10
+    disconnectedReducer: 2
   aimHelperRadius: 1
   aimingSphere: {fileID: 8701440816693552721, guid: 49bf87d3c7c097e4f98c2b4a78428a5d, type: 3}
   points: 100
   pointsDecayPercentage: 10
---- !u!114 &5338374215718113836
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3512988513211176205}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d9de996de8511f49a6b4f932f33d137, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  distanceMultiplier: 2
-  maxForce: 10
-  disconnectedReducer: 2
---- !u!114 &4682422268933925748
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3512988513211176205}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd24a8c766335ac4b9e801d1bbd9aecc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  vDirThreshold: 0.7
-  hDirThreshold: 0.7
-  vClearThreshold: 0.9
-  hClearThreshold: 0.9
 --- !u!4 &4310823009373584373 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5716440055708252790, guid: 71479ea7801c43e4fb45cbca0f67cd2d, type: 3}

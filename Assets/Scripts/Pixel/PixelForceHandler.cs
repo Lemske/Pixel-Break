@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PixelForceHandler : MonoBehaviour
+[System.Serializable]
+public class PixelForceHandler
 {
     [Header("Force Appliers")]
     [SerializeField] private float distanceMultiplier = 2;
