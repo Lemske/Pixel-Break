@@ -37,10 +37,8 @@ public class MenuButtonPicker : MonoBehaviour
         float vertical = Input.GetAxis("Vertical");
         if (vertical != 0)
         {
-            Debug.Log("Vertical: " + vertical);
             GameObject prev = buttons[currentSelectedButton];
             currentSelectedButton = (currentSelectedButton + (vertical < 0 ? -1 : 1)) % buttons.Length;
-            Debug.Log("Current Selected Button: " + currentSelectedButton);
             currentSelectedButton = currentSelectedButton < 0 ? buttons.Length - 1 : currentSelectedButton;
             UpdateSelectedButton(prev, buttons[currentSelectedButton]);
             timer = 0.5f;
