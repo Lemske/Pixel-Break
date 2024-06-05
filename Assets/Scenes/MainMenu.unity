@@ -667,7 +667,6 @@ GameObject:
   - component: {fileID: 1028711028}
   - component: {fileID: 1028711027}
   - component: {fileID: 1028711026}
-  - component: {fileID: 1028711025}
   - component: {fileID: 1028711024}
   m_Layer: 5
   m_Name: Title
@@ -712,24 +711,6 @@ MonoBehaviour:
   yDiviation: 3
   timer: 0.25
   ySomething: 4
-  outlineWidth: 1
---- !u!114 &1028711025
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1028711022}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a87bce9899d93b24287a7676741e700f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  titleCard: {fileID: 0}
-  movementRange: 10
-  yDiviation: 2
-  timer: 0.1
-  ySomething: 20
   outlineWidth: 1
 --- !u!23 &1028711026
 MeshRenderer:
