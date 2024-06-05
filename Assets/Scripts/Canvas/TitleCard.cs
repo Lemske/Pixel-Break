@@ -6,8 +6,7 @@ using UnityEngine;
 public class TitleCard : MonoBehaviour
 {
     [SerializeField] private GameObject titleCard;
-    [SerializeField] private float movementRange = 10f;
-    [SerializeField] private float yDiviation = 2f;
+    [SerializeField] private float yDeviation = 2f;
     private Vector3 initialPosition;
     private int goingUp = 1;
     private Vector3 targetPosition;
@@ -19,7 +18,7 @@ public class TitleCard : MonoBehaviour
     void Start()
     {
         initialPosition = transform.position;
-        targetPosition = new Vector3(initialPosition.x, initialPosition.y + yDiviation, initialPosition.z);
+        targetPosition = new Vector3(initialPosition.x, initialPosition.y + yDeviation, initialPosition.z);
         usingTimer = timer;
 
         TextMeshProUGUI textMeshPro = titleCard.GetComponent<TextMeshProUGUI>();
@@ -38,7 +37,7 @@ public class TitleCard : MonoBehaviour
             return;
         }
         usingTimer = timer;
-        float newPosY = transform.position.y + ((yDiviation / ySomething) * goingUp);
+        float newPosY = transform.position.y + ((yDeviation / ySomething) * goingUp);
         transform.position = new Vector3(initialPosition.x, newPosY, initialPosition.z);
 
         if ((goingUp == 1 && transform.position.y <= targetPosition.y) || (goingUp == -1 && transform.position.y >= targetPosition.y))
@@ -47,6 +46,6 @@ public class TitleCard : MonoBehaviour
 
 
         goingUp = goingUp == 1 ? -1 : 1;
-        targetPosition = new Vector3(initialPosition.x, initialPosition.y + yDiviation * goingUp, initialPosition.z);
+        targetPosition = new Vector3(initialPosition.x, initialPosition.y + yDeviation * goingUp, initialPosition.z);
     }
 }
