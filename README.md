@@ -1,6 +1,12 @@
 # About
 This is the repo of a school project in GMD1. Here you will find Blog posts, 3rd party sources and a link to youtube.
 
+# Youtube - Pixel Break Demo
+
+![image](https://github.com/Lemske/Pixel-Break/assets/95408442/b34aa8a1-6b8a-492b-9630-f3ee545b8892)
+
+https://youtu.be/kfTW9ODECrQ
+
 # Blog Posts
 
 1: https://github.com/Lemske/Pixel-Break/blob/main/BlockPost-1.md
