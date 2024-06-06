@@ -43,10 +43,10 @@ Youtube Menu Tutorial: https://www.youtube.com/watch?v=-GWjA6dixV4
 
 # WebGL
 
-You can try the WebGL build, but there are a couble things that are different. 
+You can try the WebGL build, but there are a couble things that are different/Don't work. 
 1. Main Menu and Game Over menu skybox doesnt render.
 2. Game Logo goes to the side in full screen.
-3. Sound can go a little fungy
+3. Sound can go a little funky.
 
 I'm not gonna fix this, since it's more for trying the game without going to the arcade machine. 
 
